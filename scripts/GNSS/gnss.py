@@ -34,3 +34,9 @@ class GNSS:
     l1 = wgs84.c / fGPS_L1
     l2 = wgs84.c / fGPS_L2
     l5 = wgs84.c / fGPS_L5
+    # azimVisSatsRadasd
+    # adjustasd
+    # asdads
+    # asdadsadsasd
+    # asdadsadsasd
+    # asdads

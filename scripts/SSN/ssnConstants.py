@@ -32,6 +32,10 @@ colFmtMeasEpoch = 'u2,f8,u1,u1,u1,u1,u1,f8,f8,f8,f4,u4,u1,u1'
 colNamesMeasExtra = ('EXTRA_WNC', 'EXTRA_TOW', 'EXTRA_CHANNEL', 'EXTRA_ANTENNA', 'EXTRA_SIGNALTYPE', 'EXTRA_LOCKTIME', 'EXTRA_CODEVARIANCE', 'EXTRA_CARRIERVARIANCE', 'EXTRA_DOPPLERVARIANCE', 'EXTRA_MPCORR', 'EXTRA_SMOOTHINGCORR', 'EXTRA_CUMMLOSSCONT')
 colFmtMeasExtra = 'u2,f8,u1,u1,u1,u2,f4,f4,f4,i2,i2,u1'
 
+# names and format for SatVisibility_1
+colNamesSatVisibility = ('VISIBILITY_WNC', 'VISIBILITY_TOW', 'VISIBILITY_SVID', 'VISIBILITY_FREQNR', 'VISIBILITY_SOURCE', 'VISIBILITY_AZIMUTH', 'VISIBILITY_ELEVATION', 'VISIBILITY_RISESET',)
+colFmtSatVisibility = 'u2,f8,u1,u1,u1,u2,i2,u1'
+
 # names and format for DOP
 colNamesDOP = ('DOP_WNC', 'DOP_TOW', 'DOP_NrSV', 'DOP_PDOP', 'DOP_VDOP', 'DOP_HDOP', 'DOP_TDOP', 'DOP_HPL', 'DOP_VPL')
 colFmtDOP = 'u2,f8,u1,f4,f4,f4,f4,f4,f4'

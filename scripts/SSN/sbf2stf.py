@@ -236,6 +236,29 @@ def readMeasExtra(stfMeasExtraName, verbose):
     return dataExtraSorted
 
 
+def readSatVisibility(stfSatVisibilityName, verbose):
+    """
+    reads the sbf2stf converted SatVisibility cvs file and stores it into dataVisibility numpy darray
+
+    Parameters:
+        stfSatVisibilityName: name of SatVisibility_1 file created by sbf2stf
+
+    Returns:
+        dataVisibility: contains the dataVisibility after sorting for TOW, CHANNEL and SIGNALTYPE
+    """
+
+    if verbose:
+        sys.stdout.write('    Reading and sorting SatVisibility_1 data\n')
+
+    dataVisibility = np.genfromtxt(stfSatVisibilityName, delimiter=",", skip_header=2, dtype=mSSN.colFmtSatVisibility, names=mSSN.colNamesSatVisibility)
+
+    # sort the dataVisibility array according to TOW
+    sortIndexVisibility = np.lexsort(dataVisibility['VISIBILITY_TOW'])
+    dataVisibilitySorted = dataVisibility[sortIndexVisibility]
+
+    return dataVisibilitySorted
+
+
 def readChannelStatus(stfChannelStatusName, verbose):
     """
     reads the sbf2stf converted CHannelStatus cvs file and stores it into numpy darray

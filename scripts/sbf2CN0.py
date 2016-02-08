@@ -41,7 +41,7 @@ def treatCmdOpts(argv):
 
     # create the parser for command line arguments
     parser = argparse.ArgumentParser(description=helpTxt)
-    parser.add_argument('-f','--file', help='Name of SBF file',required=True)
+    parser.add_argument('-f','--file', help='Name of SBF file', required=True)
     parser.add_argument('-d', '--dir', help='Directory of SBF file (defaults to .)', required=False, default='.')
     parser.add_argument('-o','--overwrite', help='overwrite intermediate files (default False)', action='store_true', required=False)
     parser.add_argument('-v', '--verbose', help='displays interactive graphs and increase output verbosity (default False)', action='store_true', required=False)
@@ -67,12 +67,12 @@ def createFullTimeSpan(towMeas):
     TOWMax = -1
     TOWMin = gpstime.secsInWeek + 1
 
-    for i,TOWi in enumerate(towMeas):
+    for i, TOWi in enumerate(towMeas):
         TOWMax = max(TOWMax, TOWi[-1])
         TOWMin = min(TOWMin, TOWi[0])
 
     spanTOW = np.arange(TOWMin, TOWMax+1.)
-    print ('spanTOW = %f => %f (%d)' % (spanTOW[0], spanTOW[-1], np.size(spanTOW)))
+    print('spanTOW = %f => %f (%d)' % (spanTOW[0], spanTOW[-1], np.size(spanTOW)))
     # and convert to UTC
     spanUTC = plotCN0.TOW2UTC(WkNr, spanTOW)
     print ('spanUTC = %s => %s (%d)' % (spanUTC[0], spanUTC[-1], np.size(spanUTC)))
@@ -171,11 +171,9 @@ if __name__ == "__main__":
     if not os.path.isfile(nameSBF):
         sys.stderr.write('SBF datafile %s does not exists. Exiting.\n' % nameSBF)
         sys.exit(E_FILE_NOT_EXIST)
-
     # execute the conversion sbf2stf needed
-    SBF2STFOPTS = ['MeasEpoch_2', 'MeasExtra_1']     # options for conversion, ORDER IMPORTANT!!
+    SBF2STFOPTS = ['MeasEpoch_2', 'MeasExtra_1', 'SatVisibility_1']     # options for conversion, ORDER IMPORTANT!!
     sbf2stfConverted = sbf2stf.runSBF2STF(nameSBF, SBF2STFOPTS, overwrite, verbose)
-
     # print('SBF2STFOPTS = %s' % SBF2STFOPTS)
     for option in SBF2STFOPTS:
         # print('option = %s - %d' % (option, SBF2STFOPTS.index(option)))
@@ -185,10 +183,12 @@ if __name__ == "__main__":
         elif option == 'MeasExtra_1':
             # read the MeasExtra data into numpy array
             dataExtra = sbf2stf.readMeasExtra(sbf2stfConverted[SBF2STFOPTS.index(option)], verbose)
+        elif option == 'SatVisibility_1':
+            #  read the SatVisibility data into a numpy array
+            dataVisibility = sbf2stf.readSatVisibility(sbf2stfConverted[SBF2STFOPTS.index(option)], verbose)
         else:
             print('  wrong option %s given.' % option)
             sys.exit(E_WRONG_OPTION)
-
     # check whether the same signaltypes are on corresponsing lines after sorting
     if not sbf2stf.verifySignalTypeOrder(dataMeas['MEAS_SIGNALTYPE'], dataExtra['EXTRA_SIGNALTYPE'], dataMeas['MEAS_TOW'], verbose):
         sys.exit(E_SIGNALTYPE_MISMATCH)
@@ -226,8 +226,8 @@ if __name__ == "__main__":
 
     # create the TOW array covering the whole tie range
     TOWspan, UTCspan = createFullTimeSpan(measTOW)
-    print ('TOWspan = %f => %f (%d)' % (TOWspan[0], TOWspan[-1], np.size(TOWspan)))
-    print ('UTCspan = %s => %s (%d)' % (UTCspan[0], UTCspan[-1], np.size(UTCspan)))
+    print('TOWspan = %f => %f (%d)' % (TOWspan[0], TOWspan[-1], np.size(TOWspan)))
+    print('UTCspan = %s => %s (%d)' % (UTCspan[0], UTCspan[-1], np.size(UTCspan)))
 
     # for all the CN0 data per Signaltype and SVID => add NaN for missing data
     # for index, signalType in enumerate(signalTypesSVID):
@@ -240,7 +240,7 @@ if __name__ == "__main__":
     for i, measCN0i in enumerate(measCN0):
         print('measCN0[%d] = %f - %f' % (i, measCN0i[0], measCN0i[-1]))
 
-    for i,SVID in enumerate(SVIDlist):
+    for i, SVID in enumerate(SVIDlist):
         print('Observed SV %d - SignalType = %d' % (SVID, STlist[i]))
 
     # adjust the measCNO arrays to fill with NaN as to fit the TOWall array for plotting

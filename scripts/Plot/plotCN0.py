@@ -79,7 +79,7 @@ def plotCN0(listSVIDs, listST, spanTOW, spanUTC, CN0meas, dateStr, verbose=False
         CN0meas contains observed CN0 for all SVs and all signalTypes
     '''
     # plt.style.use('ggplot')
-    plt.style.use('BEGPIOS')
+    # plt.style.use('BEGPIOS')
 
     # first plot all SVs per signalType
     # get unique list of signaltypes to determine the number of plots we have to make

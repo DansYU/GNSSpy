@@ -46,7 +46,7 @@ def treatCmdOpts(argv):
     parser.add_argument('-f','--file', help='Name of SBF file', required=True)
     parser.add_argument('-d', '--dir', help='Directory of SBF file (defaults to .)', required=False, default='.')
     parser.add_argument('-o','--overwrite', help='overwrite intermediate files (default False)', action='store_true', required=False)
-    parser.add_argument('-j','--jamming', help='setting the config file for jamming periods', required=False, default='ASTX337O.csv')
+    parser.add_argument('-j','--jamming', help='setting the config file for jamming periods', required=False, default='L1 Jamming Periods.csv')
     parser.add_argument('-v', '--verbose', help='displays interactive graphs and increase output verbosity (default False)', action='store_true', required=False)
     args = parser.parse_args()
 

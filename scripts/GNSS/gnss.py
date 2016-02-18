@@ -30,6 +30,7 @@ class GNSS:
     fGAL_E5A = fGPS_L5
     fGAL_E5B = f0 * 118.0
     fGAL_E5 = f0 * 116.5
+    fGEO_L1 = f0 * 154.0
 
     l1 = wgs84.c / fGPS_L1
     l2 = wgs84.c / fGPS_L2

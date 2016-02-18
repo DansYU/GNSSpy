@@ -190,6 +190,18 @@ def UTCFromGps(gpsWeek, SOW, leapSecs=14):
     return (year, month, day, hh, mm, ss + secFract)
 
 
+def UTCFromString(year, month, day, dataString):
+    """converts string into UTC date time
+        dataString=hh:mm:ss
+    """
+    hh = int(dataString[0:2])
+    mm = int(dataString[3:5])
+    ss = int(dataString[6:8])
+    time = datetime.datetime(year, month, day, hh, mm, ss)
+
+    return time
+
+
 def GpsSecondsFromPyUTC(pyUTC, leapSecs=14):
     """converts the python epoch to gps seconds
 
@@ -197,6 +209,7 @@ def GpsSecondsFromPyUTC(pyUTC, leapSecs=14):
     """
     t = gpsFromUTC(*ymdhmsFromPyUTC(pyUTC))
     return int(t[0] * 60 * 60 * 24 * 7 + t[1])
+
 
 def DOWFromWT(tow):
     DAYOW = np.floor(tow / (60*60*24))

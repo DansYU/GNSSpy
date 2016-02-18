@@ -244,7 +244,7 @@ def readSatVisibility(stfSatVisibilityName, verbose):
         stfSatVisibilityName: name of SatVisibility_1 file created by sbf2stf
 
     Returns:
-        dataVisibility: contains the dataVisibility after sorting for TOW, CHANNEL and SIGNALTYPE
+        dataVisibility: contains the dataVisibility after sorting for Wnc and TOW
     """
 
     if verbose:
@@ -252,11 +252,27 @@ def readSatVisibility(stfSatVisibilityName, verbose):
 
     dataVisibility = np.genfromtxt(stfSatVisibilityName, delimiter=",", skip_header=2, dtype=mSSN.colFmtSatVisibility, names=mSSN.colNamesSatVisibility)
 
-    # sort the dataVisibility array according to TOW
-    sortIndexVisibility = np.lexsort(dataVisibility['VISIBILITY_TOW'])
-    dataVisibilitySorted = dataVisibility[sortIndexVisibility]
+    # sort the dataVisibility array according to Wnc and TOW
+    # sortIndexVisibility = np.lexsort((dataVisibility['VISIBILITY_WNC'], dataVisibility['VISIBILITY_TOW']))
+    # dataVisibilitySorted = dataVisibility[sortIndexVisibility]
 
-    return dataVisibilitySorted
+    return dataVisibility
+
+
+def readJammingFile(JamFileName):
+    """
+    reads the jamming text tab delimited file and stores it into a numpy darray
+
+    Parameters:
+        JamFileName: name of file
+
+    Returns:
+        dataJamming: contains the Jamming values, start and end time.
+    """
+
+    dataJamming = np.genfromtxt(JamFileName, delimiter=",", skip_header=1, dtype=mSSN.colFmtJammingFile, names=mSSN.colNamesJammingFile)
+
+    return dataJamming
 
 
 def readChannelStatus(stfChannelStatusName, verbose):
@@ -387,6 +403,8 @@ def indicesSatellite(SVID, dataSVIDs, verbose=False):
     Returns:
         index array signalling the wanted SVID
     """
+    # print('SVID = %s' % SVID)
+    # print('dataSVIDs = %s' % dataSVIDs)
     if verbose:
         sys.stdout.write('    Extracting data for SVID %d\n' % SVID)
 

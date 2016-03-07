@@ -11,13 +11,14 @@ Classes:
 # Import required packages
 from math import sqrt, sin, cos, tan, atan, atan2
 from numpy import array, dot
-import geo                                              # Geographic class
+import GNSS.geo as geo
 
 
 class WGS84:
     """
     General parameters defined by the WGS84 system
     """
+
     a = 6378137.0                       # Semimajor axis length (m)
     b = 6356752.3142                    # Semiminor axis length (m)
     f = (a - b) / a                     # Ellipsoid flatness (unitless)
@@ -40,7 +41,6 @@ class WGS84:
         Input: lla - (lat, lon, alt) in (decimal degrees, decimal degees, m)
         Output: ecef - (x, y, z) in (m, m, m)
         """
-
         # Decompose the input
         lat = geo.deg2rad(lla[0])
         lon = geo.deg2rad(lla[1])
@@ -56,10 +56,8 @@ class WGS84:
 
     def lla2gcc(self, lla, geoOrigin=''):
         """
-
-
+        lla2gcc converts
         """
-
         if geoOrigin:
             lon0, lat0, a0 = [float(c) for c in geoOrigin.split()]
             x0, y0, z0 = self.lla2ecef((lat0, lon0, a0))
@@ -76,7 +74,6 @@ class WGS84:
         Input: ecef - (x, y, z) in (m, m, m)
         Output: lla - (lat, lon, alt) in (decimal degrees, decimal degrees, m)
         """
-
         # Decompose the input
         x = ecef[0]
         y = ecef[1]
@@ -129,7 +126,6 @@ class WGS84:
             origin - (x0, y0, z0) in (m, m, m)
         Output: ecef - (x, y, z) in (m, m, m)
         """
-
         llaOrigin = self.ecef2lla(origin)
         lat = geo.deg2rad(llaOrigin[0])
         lon = geo.deg2rad(llaOrigin[1])
@@ -145,7 +141,6 @@ class WGS84:
         Input: ned - (north, east, down) in (m, m, m)
         Output: pae - (p, alpha, epsilon) in (m, degrees, degrees)
         """
-
         p = geo.euclideanDistance(ned)
         alpha = atan2(ned[1], ned[0])
         epsilon = atan2(-ned[2], sqrt(ned[0]**2 + ned[1]**2))
@@ -160,11 +155,13 @@ class WGS84:
             origin - (x0, y0, z0) in (m, m, m)
         Output: pae - (p, alpha, epsilon) in (m, degrees, degrees)
         """
-
         ned = self.ecef2ned(ecef, origin)
         return self.ned2pae(ned)
 
     def ecef2utm(self, ecef):
+        """
+        ecef2utm converts ECEF to UTM
+        """
         lla = self.ecef2lla(ecef)
         utm, info = self.lla2utm(lla)
         return utm, info
@@ -292,6 +289,55 @@ class WGS84:
         else:
             return 'Z'
 
+    def decimalDegrees2DMS(self, value, type):
+        """
+        Converts a Decimal Degree Value into
+        Degrees Minute Seconds Notation.
+
+        Pass value as double
+        type = {Latitude or Longitude} as string
+
+        returns a string as D:M:S:Direction
+        created by: anothergisblog.blogspot.com
+        """
+        degrees = int(value)
+        submin = abs((value - int(value)) * 60)
+        minutes = int(submin)
+        subseconds = abs((submin-int(submin)) * 60)
+        direction = ""
+        if type == "Longitude":
+            if degrees < 0:
+                direction = "W"
+            elif degrees > 0:
+                direction = "E"
+            else:
+                direction = ""
+        elif type == "Latitude":
+            if degrees < 0:
+                direction = "S"
+            elif degrees > 0:
+                direction = "N"
+            else:
+                direction = ""
+        notation = str(degrees) + ":" + str(minutes) + ":" + str(subseconds)[0:5] + "" + direction
+        return notation
+
+    def decimalDegrees2DM(self, value):
+        """
+        Converts a Decimal Degree Value into
+        Degrees Minute Notation.
+
+        Pass value as double
+
+        returns a string as D:M
+        created by: anothergisblog.blogspot.com
+        adopted by: alain.muls@gmail.com
+        """
+        degrees = int(value)
+        minutes = abs((value - int(value)) * 60)
+
+        notation = str(degrees) + "," + str(minutes)
+        return notation
 
 if __name__ == "__main__":
     wgs84 = WGS84()
@@ -316,3 +362,6 @@ if __name__ == "__main__":
     print('BEGP @t: ', begpt)
     print('RefPos : ', begpRefPos)
     print('ENU    : ', enu)
+
+    utm = wgs84.lla2utm(lla)
+    print('utm    : ', utm)

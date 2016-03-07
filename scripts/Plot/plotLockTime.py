@@ -18,18 +18,17 @@ def plotLockTime(SVID, signalTypes, dataMeasSVID, lliIndices, lliTOWs, verbose):
         indexLossOfLock: indices for the occurance of loss of lock
         verbose: display interactive plot
     """
-
-    # print '\nplotLockTime' + '-' * 25
+    # print('\nplotLockTime' + '-' * 25)
     gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVID)
 
     for i, signalType in enumerate(signalTypes):
-        print 'PLT: signalType[%d] = %s' % (i, signalType)
-        print 'PLT: TOW = %s (%d)' % (dataMeasSVID[i]['MEAS_TOW'], len(dataMeasSVID[i]['MEAS_TOW']))
-        print 'PLT: lockTimes = %s (%d)\n' % (dataMeasSVID[i]['MEAS_LOCKTIME'], len(dataMeasSVID[i]['MEAS_LOCKTIME']))
-        print "PLT: indexLossOfLock[%d] = %s (Nr = %d)" % (i, lliIndices[i], len(lliIndices[i]))
+        print('PLT: signalType[%d] = %s' % (i, signalType))
+        print('PLT: TOW = %s (%d)' % (dataMeasSVID[i]['MEAS_TOW'], len(dataMeasSVID[i]['MEAS_TOW'])))
+        print('PLT: lockTimes = %s (%d)\n' % (dataMeasSVID[i]['MEAS_LOCKTIME'], len(dataMeasSVID[i]['MEAS_LOCKTIME'])))
+        print("PLT: indexLossOfLock[%d] = %s (Nr = %d)" % (i, lliIndices[i], len(lliIndices[i])))
         # myData2 = dataMeasSVID[i][lliIndices[i]]
-        # print "PLT: myData2 = %s (len = %d)" % (myData2['MEAS_TOW'], len(myData2['MEAS_TOW']))
-        # print "PLT: idemand = %s (len = %d)\n" % (dataMeasSVID[i][lliIndices[i]]['MEAS_TOW'], len(dataMeasSVID[i][lliIndices[i]]['MEAS_TOW']))
+        # print("PLT: myData2 = %s (len = %d)" % (myData2['MEAS_TOW'], len(myData2['MEAS_TOW'])))
+        # print("PLT: idemand = %s (len = %d)\n" % (dataMeasSVID[i][lliIndices[i]]['MEAS_TOW'], len(dataMeasSVID[i][)lliIndices[i]]['MEAS_TOW']))
 
     # create the plot window
     # plt.style.use('BEGPIOS')
@@ -44,7 +43,7 @@ def plotLockTime(SVID, signalTypes, dataMeasSVID, lliIndices, lliTOWs, verbose):
 
     for index, signalType in enumerate(signalTypes):
         # lockTime = dataMeasSVID[index]['MEAS_LOCKTIME']
-        # print "index = %d  lockTime.size = %d" % (index, len(lockTime))
+        # print("index = %d  lockTime.size = %d" % (index, len(lockTime)))
         sigTypeColor = mPlt.getSignalTypeColor(signalType)
 
         utc = []

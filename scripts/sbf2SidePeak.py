@@ -32,9 +32,9 @@ E_FAILURE = 99
 
 # treat the arguments passed
 def treatCmdOpts(argv):
-    '''
+    """
     treatCmdOpts treats the command line arguments using
-    '''
+    """
     helpTxt = os.path.basename(__file__) + ' searches for sidepeak jumps in PRS signals'
 
     # create the parser for command line arguments

@@ -4,30 +4,12 @@
 		"E501",
 		"E801"
 	],
+	"virtualenv": "/home/amuls/virtenvs/GNSSpy",
 	"build_systems":
 	[
 		{
-			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
-			"name": "Anaconda Python Builder",
-			"selector": "source.python",
-			"shell_cmd": "python -u \"$file\""
-		},
-		{
-			"cmd":
-			[
-				"python",
-				"sbf2SidePeak.py",
-				"-f",
-				"BEGP1970.15_"
-			],
-			"name": "Run sbf2SidePeak",
-			"word_wrap": false,
-			"working_dir": "${PROJECT_HOME}/${PROJECT_NAME}/SSN/data/15197",
-			"wrap_width": 9999
-		},
-		{
-			"word_wrap": false,
-			"wrap_width": 9999
+		 "name": "sbf2SidePeak help",
+		 "shell_cmd": "/home/amuls/virtenvs/GNSSpy/bin/python ~/amPython/GNSSpy/scripts/sbf2SidePeak.py -f /home/amuls/amPython/GNSSpy/SSN/data/15197/BEGP1970.15_ -v"
 		}
 	],
 	"folders":

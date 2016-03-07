@@ -1,0 +1,75 @@
+{
+	"autoformat_ignore":
+	[
+		"E501",
+		"E801"
+	],
+	"build_systems":
+	[
+		{
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"name": "Anaconda Python Builder",
+			"selector": "source.python",
+			"shell_cmd": "python -u \"$file\""
+		},
+		{
+			"cmd":
+			[
+				"python",
+				"sbf2SidePeak.py",
+				"-f",
+				"BEGP1970.15_"
+			],
+			"name": "Run sbf2SidePeak",
+			"word_wrap": false,
+			"working_dir": "${PROJECT_HOME}/${PROJECT_NAME}/SSN/data/15197",
+			"wrap_width": 9999
+		},
+		{
+			"word_wrap": false,
+			"wrap_width": 9999
+		}
+	],
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"*.pyc"
+			],
+			"folder_exclude_patterns":
+			[
+				"auto",
+				".svn"
+			],
+			"path": "/home/amuls/amPython/GNSSpy/scripts"
+		},
+		{
+			"path": "/home/amuls/amPython/GNSSpy/SSN/scilab"
+		},
+		{
+			"path": "/home/amuls/amPython/GNSSpy/SSN/data"
+		},
+		{
+			"path": "/home/amuls/amPython/GNSSpy/matplotlib"
+		}
+	],
+	"pep8_ignore":
+	[
+		"E501",
+		"W191",
+		"E41",
+		"E231"
+	],
+	"pep8_max_line_length": 180,
+	"settings":
+	{
+		"anaconda_linting": true,
+		"anaconda_linting_behaviour": "always",
+		"pep257": false,
+		"python_interpreter_path": "/usr/bin/env python",
+		"use_pylint": false,
+		"validate_imports": true
+	},
+	"virtualenv": "/home/amuls/virtenvs/GNSSpy"
+}

@@ -12,7 +12,7 @@ from GNSS import gpstime
 
 
 def suplabel(axis, label, label_prop=None, labelpad=3, ha='center', va='center'):
-    '''
+    """
     Add super ylabel or xlabel to the figure
     Similar to matplotlib.suptitle
         axis       - string: "x" or "y"
@@ -21,7 +21,7 @@ def suplabel(axis, label, label_prop=None, labelpad=3, ha='center', va='center')
         labelpad   - padding from the axis (default: 5)
         ha         - horizontal alignment (default: "center")
         va         - vertical alignment (default: "center")
-    '''
+    """
     fig = pylab.gcf()
     xmin = []
     ymin = []
@@ -49,7 +49,7 @@ def suplabel(axis, label, label_prop=None, labelpad=3, ha='center', va='center')
 
 
 def TOW2UTC(WkNr, TOW):
-    '''
+    """
     TOW2UTC transforms an list expressed in TOW to UTC list
 
     Parameters:
@@ -58,7 +58,7 @@ def TOW2UTC(WkNr, TOW):
 
     Return:
         UTC: list of UTCs
-    '''
+    """
     # transform TOW to UTC representation
     UTC = []
     for i in range(0, len(TOW)):
@@ -69,7 +69,7 @@ def TOW2UTC(WkNr, TOW):
 
 
 def plotCN0(listSVIDs, listST, spanTOW, spanUTC, CN0meas, dateStr, verbose=False):
-    '''
+    """
     plotCN0 plots the CN0 values for SVs per signalType observed
     Parameters:
         listSVIDs is list of SVIDs we have data for
@@ -77,7 +77,7 @@ def plotCN0(listSVIDs, listST, spanTOW, spanUTC, CN0meas, dateStr, verbose=False
         spanTOW is the full observation time span
         spanUTC is the UTC representation of spanTOW
         CN0meas contains observed CN0 for all SVs and all signalTypes
-    '''
+    """
     # plt.style.use('ggplot')
     # plt.style.use('BEGPIOS')
 
@@ -166,7 +166,7 @@ def plotCN0(listSVIDs, listST, spanTOW, spanUTC, CN0meas, dateStr, verbose=False
                 stLabel.append(mSSN.GNSSSignals[listST[j]]['name'])
                 print('mSSN.GNSSSignals[listST[%d]][name] = %s' % (j, mSSN.GNSSSignals[listST[j]]['name']))
                 print('spanUTC = %s  ==>  %s' % (spanUTC[0], spanUTC[-1]))
-                plt.plot(spanUTC, CN0meas[j],linestyle='-', color=next(colors), linewidth=0.25, alpha=0.75, label=stLabel[-1])
+                plt.plot(spanUTC, CN0meas[j], linestyle='-', color=next(colors), linewidth=0.25, alpha=0.75, label=stLabel[-1])
 
                 # plot annotation
                 gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVj)

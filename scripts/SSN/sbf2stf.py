@@ -32,7 +32,6 @@ def runCmd(cmd, optCmd, verbose):
         on completion, returns the stdout output of program
         on error, informs the error and exits
     """
-
     # some constants used
     TIME2WAIT = 300
     NROFDOTS = 10
@@ -84,7 +83,6 @@ def runSBF2STF(sbfFileName, optSBF2STF, overwrite, verbose):
     Returns:
         nameConverted: list of names of output files created
     """
-
     # check whether program SBF2STF is on PATH
     SBF2STF = location.whereis('sbf2stf')                     # convert SBF to ASCII data
     if SBF2STF is None:
@@ -246,7 +244,6 @@ def readSatVisibility(stfSatVisibilityName, verbose):
     Returns:
         dataVisibility: contains the dataVisibility after sorting for TOW, CHANNEL and SIGNALTYPE
     """
-
     if verbose:
         sys.stdout.write('    Reading and sorting SatVisibility_1 data\n')
 
@@ -416,13 +413,13 @@ def indicesSignalType(signalType, measSignalType, verbose=False):
 
 
 def findValidElevation(elevData, verbose):
-    '''
+    """
     findValidElevation searches for valid values for elevation angle
     Parameters:
         elevData columns with logged elevation data
     returns:
         indices which indicate valid elevation data
-    '''
+    """
     if verbose:
         sys.stdout.write('    Extracting valid elevation data\n')
 
@@ -430,7 +427,7 @@ def findValidElevation(elevData, verbose):
 
 
 def findValidDOP(pdopData, verbose):
-    '''
+    """
     findValidDOP seraches for the valid values for PDOP
 
     Parameters:
@@ -438,7 +435,7 @@ def findValidDOP(pdopData, verbose):
 
     Returns:
         indices which indicate valid DOP data
-    '''
+    """
     if verbose:
         sys.stdout.write('    Extracting valid PDOP data\n')
 
@@ -454,7 +451,7 @@ def findValidDOP(pdopData, verbose):
 
 
 def findNrSVs(nrSVsData, verbose):
-    '''
+    """
     findNrSVs searches for nrSVs > 0
 
     Parameters:
@@ -462,7 +459,7 @@ def findNrSVs(nrSVsData, verbose):
 
     Returns:
         indices which indicate positive nr of SVs
-    '''
+    """
     if verbose:
         sys.stdout.write('      Extracting number of observed satellites.\n')
 
@@ -501,7 +498,9 @@ def findLossOfLock(measLockTime, verbose):
 
 
 def findNanValues(data):
-
+    """
+    findNanValues looks where the data is NaN
+    """
     # if verbose:
     #     sys.stdout.write('  Looking for NaN index\n')
     print('data = %s (#%d)' % (data, len(data)))
@@ -510,7 +509,7 @@ def findNanValues(data):
 
 
 def findSidePeaks(SVID, signalTypes, dataMeasSVID, verbose):
-    '''
+    """
     findSidePeaks finds the side peak correlation by differencing the code measurements on E1A and E6
     Parameters:
         SVID: identifies the satellite
@@ -522,7 +521,7 @@ def findSidePeaks(SVID, signalTypes, dataMeasSVID, verbose):
         sidePeakIndex: the index at which a jump in dPR is detected (exluding the first value)
         jumpDPR: the difference between dPR at detected side peak and its previous value (thus jump in dPR detected)
         jumpDPRNear97Indices: indices in jumpDPR identifying the elements nearest to 9.7 integer multiple
-    '''
+    """
     print('-' * 50)
     if verbose:
         sys.stdout.write('  Looking for Side Peaks\n')

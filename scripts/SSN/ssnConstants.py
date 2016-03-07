@@ -21,7 +21,8 @@ GNSSSignals = {0: {'name': 'GPS_L1-CA', 'freq': str(mGNSS.fGPS_L1)},
                19: {'name': 'GAL_E6BC', 'freq': str(mGNSS.fGAL_E6BC)},
                20: {'name': 'GAL_E5a', 'freq': str(mGNSS.fGAL_E5A)},
                21: {'name': 'GAL_E5b', 'freq': str(mGNSS.fGAL_E5B)},
-               22: {'name': 'GAL_E5', 'freq': str(mGNSS.fGAL_E5)}
+               22: {'name': 'GAL_E5', 'freq': str(mGNSS.fGAL_E5)},
+               24: {'name': 'GEO_L1', 'freq': str(mGNSS.fGEO_L1)}
                }
 
 # names and format for MeasEpoch_2
@@ -33,8 +34,12 @@ colNamesMeasExtra = ('EXTRA_WNC', 'EXTRA_TOW', 'EXTRA_CHANNEL', 'EXTRA_ANTENNA',
 colFmtMeasExtra = 'u2,f8,u1,u1,u1,u2,f4,f4,f4,i2,i2,u1'
 
 # names and format for SatVisibility_1
-colNamesSatVisibility = ('VISIBILITY_WNC', 'VISIBILITY_TOW', 'VISIBILITY_SVID', 'VISIBILITY_FREQNR', 'VISIBILITY_SOURCE', 'VISIBILITY_AZIMUTH', 'VISIBILITY_ELEVATION', 'VISIBILITY_RISESET',)
-colFmtSatVisibility = 'u2,f8,u1,u1,u1,u2,i2,u1'
+colNamesSatVisibility = ('VISIBILITY_WNC', 'VISIBILITY_TOW', 'VISIBILITY_SVID', 'VISIBILITY_FREQNR', 'VISIBILITY_SOURCE', 'VISIBILITY_AZIMUTH', 'VISIBILITY_ELEVATION', 'VISIBILITY_RISESET')
+colFmtSatVisibility = 'u2,f8,u1,u1,u1,f4,f4,u1'
+
+# names and format for Jamming file
+colNamesJammingFile = ('JAMMING_VALUE', 'START_TIME', 'END_TIME')
+colFmtJammingFile = (float, '|S8', '|S8')
 
 # names and format for DOP
 colNamesDOP = ('DOP_WNC', 'DOP_TOW', 'DOP_NrSV', 'DOP_PDOP', 'DOP_VDOP', 'DOP_HDOP', 'DOP_TDOP', 'DOP_HPL', 'DOP_VPL')

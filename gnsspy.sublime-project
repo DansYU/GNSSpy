@@ -8,8 +8,16 @@
 	"build_systems":
 	[
 		{
-		 "name": "sbf2SidePeak help",
+		 "name": "sbf2SidePeak BEGP1970.15_",
 		 "shell_cmd": "/home/amuls/virtenvs/GNSSpy/bin/python ~/amPython/GNSSpy/scripts/sbf2SidePeak.py -f /home/amuls/amPython/GNSSpy/SSN/data/15197/BEGP1970.15_ -v"
+		},
+		{
+		 "name": "sbf2CN0 BEGP1970.15_",
+		 "shell_cmd": "/home/amuls/virtenvs/GNSSpy/bin/python ~/amPython/GNSSpy/scripts/sbf2CN0.py -f /home/amuls/amPython/GNSSpy/SSN/data/15197/BEGP1970.15_ -v"
+		},
+		{
+		 "name": "sbf2DOP BEGP1970.15_",
+		 "shell_cmd": "/home/amuls/virtenvs/GNSSpy/bin/python ~/amPython/GNSSpy/scripts/sbf2DOP.py -f /home/amuls/amPython/GNSSpy/SSN/data/15197/BEGP1970.15_ -v"
 		}
 	],
 	"folders":

@@ -21,7 +21,7 @@
 		},
 		{
 		 "name": "sbf2LockTime BEGP1970.15_",
-		 "shell_cmd": "/home/amuls/virtenvs/GNSSpy/bin/python ~/amPython/GNSSpy/scripts/sbf2LockTime.py -f BEGP1970.15_ -d /home/amuls/amPython/GNSSpy/SSN/data/15197/ -v"
+		 "shell_cmd": "/home/amuls/virtenvs/GNSSpy/bin/python ~/amPython/GNSSpy/scripts/sbf2LockTime.py -f BEGP1970.15_ -d /home/amuls/amPython/GNSSpy/SSN/data/15197/ --verbose"
 		}
 	],
 	"folders":

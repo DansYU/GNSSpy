@@ -4,6 +4,12 @@ import sys
 import os
 import numpy as np
 import argparse
+import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+
+from SSN import sbf2stf
+from SSN import ssnConstants as mSSN
+from Plot import plotLockTime
 
 _author__ = 'amuls'
 
@@ -39,11 +45,11 @@ def treatCmdOpts(argv):
     parser.add_argument('-v', '--verbose', help='displays interactive graphs and increase output verbosity (default False)', action='store_true', required=False)
     args = parser.parse_args()
 
-    # # show values
-    # print ('SBFFile: %s' % args.file)
-    # print ('dir = %s' % args.dir)
-    # print ('verbose: %s' % args.verbose)
-    # print ('overwrite: %s' % args.overwrite)
+    # show values
+    print ('SBFFile: %s' % args.file)
+    print ('dir = %s' % args.dir)
+    print ('verbose: %s' % args.verbose)
+    print ('overwrite: %s' % args.overwrite)
 
     return args.file, args.dir, args.overwrite, args.verbose
 
@@ -75,3 +81,101 @@ if __name__ == "__main__":
     if not os.path.isfile(nameSBF):
         sys.stderr.write('SBF datafile %s does not exists. Exiting.\n' % nameSBF)
         sys.exit(E_FILE_NOT_EXIST)
+
+    # execute the conversion sbf2stf needed
+    SBF2STFOPTS = ['MeasEpoch_2', 'MeasExtra_1']     # options for conversion, ORDER IMPORTANT!!
+    sbf2stfConverted = sbf2stf.runSBF2STF(nameSBF, SBF2STFOPTS, overwrite, verbose)
+
+    # print 'SBF2STFOPTS = %s' % SBF2STFOPTS
+    for option in SBF2STFOPTS:
+        # print 'option = %s - %d' % (option, SBF2STFOPTS.index(option))
+        if option == 'MeasEpoch_2':
+            # read the MeasEpoch data into a numpy array
+            dataMeas = sbf2stf.readMeasEpoch(sbf2stfConverted[SBF2STFOPTS.index(option)], verbose)
+        elif option == 'MeasExtra_1':
+            # read the MeasExtra data into numpy array
+            dataExtra = sbf2stf.readMeasExtra(sbf2stfConverted[SBF2STFOPTS.index(option)], verbose)
+        else:
+            print('  wrong option %s given.' % option)
+            sys.exit(E_WRONG_OPTION)
+
+    # check whether the same signaltypes are on corresponsing lines after sorting
+    if not sbf2stf.verifySignalTypeOrder(dataMeas['MEAS_SIGNALTYPE'], dataExtra['EXTRA_SIGNALTYPE'], dataMeas['MEAS_TOW'], verbose):
+        sys.exit(E_SIGNALTYPE_MISMATCH)
+
+    # correct the smoothed PR Code and work with the raw PR
+    dataMeas['MEAS_CODE'] = sbf2stf.removeSmoothing(dataMeas['MEAS_CODE'], dataExtra['EXTRA_SMOOTHINGCORR'], dataExtra['EXTRA_MPCORR'])
+    # print 'dataMeas['MEAS_CODE'] = %s\n' % dataMeas['MEAS_CODE']
+
+    # find list of SVIDs observed
+    SVIDs = sbf2stf.observedSatellites(dataMeas['MEAS_SVID'], verbose)
+
+    for SVID in SVIDs:
+        print('=' * 50)
+        gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVID)
+        print('SVID = %d - %s - %s%d' % (SVID, gnssSyst, gnssSystShort, gnssPRN))
+
+        indexSVID = sbf2stf.indicesSatellite(SVID, dataMeas['MEAS_SVID'], verbose)
+        dataMeasSVID = dataMeas[indexSVID]
+        print("indexSVID = %s" % indexSVID)
+
+        # store temporaray results ONLY for inspection
+        nameDataMeasSVID = str(SVID) + '.csv'
+        print('nameDataMeasSVID = %s' % nameDataMeasSVID)
+        print('dataMeasSVID = %s' % dataMeasSVID)
+        np.savetxt(nameDataMeasSVID, dataMeasSVID, fmt='%i,%.1f,%i,%i,%i,%i,%i,%.2f,%.2f,%.2f,%.2f,%i,%i,%i')
+
+        signalTypesSVID = sbf2stf.observedSignalTypes(dataMeasSVID['MEAS_SIGNALTYPE'], verbose)
+        print 'signalTypesSVID = %s' % signalTypesSVID
+
+        # print("len dataMeas['MEAS_CODE'] %d" % len(dataMeas['MEAS_CODE']))
+        # print("len dataMeasSVID['MEAS_CODE'] %d" % len(dataMeasSVID['MEAS_CODE']))
+        # print dataMeasSVID['MEAS_SVID']
+
+        indexSignalType = []
+        dataMeasSVIDSignalType = []
+        lliIndicators = []
+        lliTOWs = []
+
+        for index, signalType in enumerate(signalTypesSVID):
+            print('-' * 25)
+            print("signalType = %s  index=%d - name = %s\n" % (signalType, index, mSSN.GNSSSignals[signalType]['name']))
+
+            indexSignalType.extend(np.array(sbf2stf.indicesSignalType(signalType, dataMeasSVID['MEAS_SIGNALTYPE'], verbose)))
+
+            print('type indexSignalType = %s' % type(indexSignalType))
+            print('type indexSignalType[index] = %s' % type(indexSignalType[index]))
+            print('indexSignalType = %s' % indexSignalType)
+            print("indexSignalType[index] = %s (len = %d)" % (indexSignalType[index], len(indexSignalType[index])))
+            print("indexSignalType[index][2] = %s\n" % indexSignalType[index][2])
+
+            # set the data for 1 SV and 1 ST
+            dataMeasSVIDSignalType.append(dataMeasSVID[indexSignalType[index]])
+
+            print("dataMeasSVIDSignalType[index]['MEAS_LOCKTIME'] = %s (len = %d)" % (dataMeasSVIDSignalType[index]['MEAS_LOCKTIME'], len(dataMeasSVIDSignalType[index]['MEAS_LOCKTIME'])))
+            print("dataMeasSVIDSignalType[index]['MEAS_LOCKTIME'][2] = %s\n" % dataMeasSVIDSignalType[index]['MEAS_LOCKTIME'][2])
+            print("dataMeasSVIDSignalType[index][2] = %s\n" % dataMeasSVIDSignalType[index][2])
+            print("dataMeasSVIDSignalType[index] = %s\n" % dataMeasSVIDSignalType[index])
+
+            # # store temporaray results ONLY for inspection
+            nameDataMeasSVIDSignalType = '%s-%s%d-%s.csv' % (gnssSyst, gnssSystShort, gnssPRN, mSSN.GNSSSignals[signalType]['name'])
+            np.savetxt(nameDataMeasSVIDSignalType, dataMeasSVIDSignalType[index], fmt='%i,%.1f,%i,%i,%i,%i,%i,%.2f,%.2f,%.2f,%.2f,%i,%i,%i')
+
+            # find loss of lock for SVID and SignalType
+            lliIndicators.extend(np.array(sbf2stf.findLossOfLock(dataMeasSVIDSignalType[index]['MEAS_LOCKTIME'], verbose)))
+
+            print('type lliIndicators = %s' % type(lliIndicators))
+            print('type lliIndicators[index] = %s' % type(lliIndicators[index]))
+            print("lliIndicators[index] = %s (%d)" % (lliIndicators[index], len(lliIndicators[index])))
+            lliTOWs.append(dataMeasSVIDSignalType[index][lliIndicators[index]]['MEAS_TOW'])
+            print('lliTOWs = %s (%d)' % (lliTOWs[index], len(lliTOWs[index])))
+
+        # plot the locktimes for this SVID for all SignalTypes
+        plotLockTime.plotLockTime(SVID, signalTypesSVID, dataMeasSVIDSignalType, lliIndicators, lliTOWs, verbose)
+        print('-' * 25)
+
+        if verbose:
+            plt.show()
+
+
+        sys.exit(-1)

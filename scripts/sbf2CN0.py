@@ -47,7 +47,7 @@ def treatCmdOpts(argv):
     parser.add_argument('-f', '--file', help='Name of SBF file', required=True)
     parser.add_argument('-d', '--dir', help='Directory of SBF file (defaults to .)', required=False, default='.')
     parser.add_argument('-o', '--overwrite', help='overwrite intermediate files (default False)', action='store_true', required=False)
-    parser.add_argument('-j', '--jamming', help='setting the config file for jamming periods', required=False, default='L1 Jamming Periods.csv')
+    parser.add_argument('-j', '--jamming', help='setting the config file for jamming periods', required=False, default='.')
     parser.add_argument('-v', '--verbose', help='displays interactive graphs and increase output verbosity (default False)', action='store_true', required=False)
     args = parser.parse_args()
 
@@ -198,14 +198,10 @@ if __name__ == "__main__":
         sys.stderr.write('SBF datafile %s does not exists. Exiting.\n' % nameSBF)
         sys.exit(E_FILE_NOT_EXIST)
 
-    # check whether the Jamming config datafile exists
-    if not os.path.isfile(jamming):
-        sys.stderr.write('Config file does not exists.Process stops')
-        sys.exit(E_FILE_NOT_EXIST)
     # execute the conversion sbf2stf needed
     SBF2STFOPTS = ['MeasEpoch_2', 'MeasExtra_1', 'SatVisibility_1']     # options for conversion, ORDER IMPORTANT!!
     sbf2stfConverted = sbf2stf.runSBF2STF(nameSBF, SBF2STFOPTS, overwrite, verbose)
-    # print('SBF2STFOPTS = %s' % SBF2STFOPTS)
+    print('SBF2STFOPTS = %s' % SBF2STFOPTS)
     for option in SBF2STFOPTS:
         # print('option = %s - %d' % (option, SBF2STFOPTS.index(option)))
         if option == 'MeasEpoch_2':
@@ -222,17 +218,18 @@ if __name__ == "__main__":
             sys.exit(E_WRONG_OPTION)
 
     # preparing jamming file
-    dataJamming = sbf2stf.readJammingFile(jamming)
     JammingValues = []
     JammingStartTime = []
     JammingEndTime = []
-    for i in dataJamming['JAMMING_VALUE']:
-        JammingValues.append(i)
-    for i in dataJamming['START_TIME']:
-        JammingStartTime.append(gpstime.UTCFromString(2015, 12, 3, i))
-        print(JammingStartTime)
-    for i in dataJamming['END_TIME']:
-        JammingEndTime.append(gpstime.UTCFromString(2015, 12, 3, i))
+    if jamming is not '.':
+        dataJamming = sbf2stf.readJammingFile(jamming)
+        for i in dataJamming['JAMMING_VALUE']:
+            JammingValues.append(i)
+        for i in dataJamming['START_TIME']:
+            JammingStartTime.append(gpstime.UTCFromString(2015, 12, 3, i))
+            print(JammingStartTime)
+        for i in dataJamming['END_TIME']:
+            JammingEndTime.append(gpstime.UTCFromString(2015, 12, 3, i))
 
     # check whether the same signaltypes are on corresponsing lines after sorting
     if not sbf2stf.verifySignalTypeOrder(dataMeas['MEAS_SIGNALTYPE'], dataExtra['EXTRA_SIGNALTYPE'], dataMeas['MEAS_TOW'], verbose):

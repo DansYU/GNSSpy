@@ -4,7 +4,7 @@ import pylab
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as md
-# import matplotlib.cm as cm
+import matplotlib.cm as cm
 # import sys
 
 from SSN import ssnConstants as mSSN
@@ -69,7 +69,7 @@ def TOW2UTC(WkNr, TOW):
     return UTC
 
 
-def plotCN0(k, listSVIDs, listST, spanElevation, spanUTC, spanJammingStart, spanJammingEnd, CN0meas, dataVisibilitySVprn, dataJammingValues, dateStr, verbose=False):
+def plotCN0(k, firstSV, listSVIDs, listST, spanElevation, spanUTC, spanJammingStart, spanJammingEnd, CN0meas, dataVisibilitySVprn, dataJammingValues, dateStr, verbose=False):
     """
     plotCN0 plots the CN0 values for SVs per signalType observed
     Parameters:
@@ -86,10 +86,11 @@ def plotCN0(k, listSVIDs, listST, spanElevation, spanUTC, spanJammingStart, span
     # first plot all SVs per signalType
     # get unique list of signaltypes to determine the number of plots we have to make
     uniqSTs = list(set(listST))
+    uniqSVs = list(set(listSVIDs))
+    figNr = len(uniqSTs)  # nr of figures already used
     # print('uniqSTs = %s' % uniqSTs)
-
     # loop over the signalTypes
-    if k == 1:
+    if k == firstSV:
         for i, uniqSTi in enumerate(uniqSTs):
             plt.figure(i)
             ax = plt.gca()
@@ -148,22 +149,84 @@ def plotCN0(k, listSVIDs, listST, spanElevation, spanUTC, spanJammingStart, span
                 if verbose:
                     plt.show()
 
-    # second plot all signalTypes per SVs
-    # find the SV identifiers ans make them unique
-    uniqSVs = list(set(listSVIDs))
-    figNr = len(uniqSTs)  # nr of figures already used
+        # second plot all signalTypes per SVs
+        # find the SV identifiers ans make them unique
+        for i, uniqSVi in enumerate(uniqSVs):
+            plt.figure(i + figNr)
+            ax = plt.gca()
+
+            # create label for signalType and plot its SN0 for this uniqSVi
+            stLabel = []
+            colors = iter(cm.rainbow(np.linspace(0, 1, len(listST))))
+
+            for j, SVj in enumerate(listSVIDs):
+                if SVj == uniqSVi:
+                    stLabel.append(mSSN.GNSSSignals[listST[j]]['name'])
+                    print('mSSN.GNSSSignals[listST[%d]][name] = %s' % (j, mSSN.GNSSSignals[listST[j]]['name']))
+                    print('spanUTC = %s  ==>  %s' % (spanUTC[0], spanUTC[-1]))
+                    plt.plot(spanUTC, CN0meas[j], linestyle='-', color=next(colors), linewidth=0.25, alpha=0.75, label=stLabel[-1])
+
+                    # plot annotation
+                    gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVj)
+                    textSVID = gnssSystShort + str(gnssPRN)
+                    print('j = %d - SV = %s,  uniqSVi = %s\n' % (i, textSVID, uniqSVi))
+
+                    plt.title('Satellite: %s' % textSVID)
+                    plt.xlabel('Time of ' + dateStr)
+                    plt.ylabel('C/N0')
+
+            # adjust the X-axis to represent readable time
+            ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M:%S'))
+            plt.xlim(spanUTC[0], spanUTC[-1])
+            # annotate for copyright
+            plt.text(0, -0.125, r'$\copyright$ Alain Muls (alain.muls@rma.ac.be)', horizontalalignment='left', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
+            plt.text(1, -0.125, r'$\copyright$ Frederic Snyers (fredericsn@gmail.com)', horizontalalignment='right', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
+            # add the legend
+            # Shrink current axis's height by x% on the bottom
+            box = ax.get_position()
+            # print('box.x0     = %f' % box.x0)
+            # print('box.y0     = %f' % box.y0)
+            # print('box.width  = %f' % box.width)
+            # print('box.height = %f' % box.height)
+
+            # ax = plt.subplot(111)
+            ax.set_position([box.x0, box.y0 + box.height * 0.4,
+                             box.width, box.height * 0.6])
+            box = ax.get_position()
+            # print('after\nbox.x0     = %f' % box.x0)
+            # print('box.y0     = %f' % box.y0)
+            # print('box.width  = %f' % box.width)
+            # print('box.height = %f' % box.height)
+
+            plt.legend(bbox_to_anchor=(box.x0 + box.width*0.2, -0.15, box.width*0.6, 0.15), loc='lower center', ncol=np.size(stLabel), fontsize='xx-small')
+            llines = plt.gca().get_legend().get_lines()  # all the lines.Line2D instance in the legend
+            plt.setp(llines, linewidth=4)      # the legend linewidth
+
+            # plt.legend(bbox_to_anchor=(0., 1.052, 1., .052), loc='lower left', ncol=np.size(stLabel), mode="expand", borderaxespad=0., fontsize=9)
+            plt.tight_layout(rect=(0, 0, 1, 1))
+            # Shrink current axis's height by 10% on the bottom
+            box = ax.get_position()
+            ax = plt.subplot(111)
+            ax.set_position([box.x0, box.y0 + box.height * 0.1,
+                             box.width, box.height * 0.9])
+            fig = plt.gcf()
+            fig.savefig('%s-%s%d-CN0.png' % (gnssSyst, gnssSystShort, gnssPRN), dpi=fig.dpi)
+            if i != len(uniqSVs)-1:
+                if verbose:
+                    plt.show(block=False)
+            else:
+                if verbose:
+                    plt.show()
+        # close the figure
+            plt.close()
     for i, uniqSVi in enumerate(uniqSVs):
         if k == uniqSVi:
             fig = plt.figure(i + figNr)
             ax = plt.gca()
-            # plt.setp(ax2.get_yticklabels(), visible=False)
-            # ax2.yaxis.set_tick_params(size=0)
-            # ax.tick_params(right='on')
-
             ax.set_color_cycle(['purple', 'black', 'green', 'cyan', 'violet'])
+
             # create label for signalType and plot its SN0 for this uniqSVi
             stLabel = []
-            # colors = iter(cm.rainbow(np.linspace(0, 1, len(listST))))
             for j, SVj in enumerate(listSVIDs):
                 if SVj == uniqSVi:
                     stLabel.append(mSSN.GNSSSignals[listST[j]]['name'])
@@ -171,6 +234,7 @@ def plotCN0(k, listSVIDs, listST, spanElevation, spanUTC, spanJammingStart, span
                     print('spanUTC = %s  ==>  %s' % (spanUTC[0], spanUTC[-1]))
                     # plotting CNO
                     ax.plot(spanUTC, CN0meas[j], linestyle='-', linewidth=0.5, alpha=1, label=stLabel[-1])
+                    ax.set_ylim(20, 60)
                     # plot annotation for CN0
                     gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVj)
                     textSVID = gnssSystShort + str(gnssPRN)
@@ -185,8 +249,7 @@ def plotCN0(k, listSVIDs, listST, spanElevation, spanUTC, spanJammingStart, span
                     ax.set_ylabel('C/NO', fontsize='x-large')
                     ax2.set_ylabel('Elevation', fontsize='x-large')
             y_min, y_max = ax.get_ylim()
-            # print(y_min, y_max)
-            # sys.exit(0)
+
             # plotting vertical lines corresponding the jamming starting and ending time
             for i, j, k in zip(spanJammingStart, spanJammingEnd, dataJammingValues):
                 ax.axvline(i, color='k', linestyle='-')

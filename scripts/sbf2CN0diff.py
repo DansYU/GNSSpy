@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import time
 
 from SSN import sbf2stf
-from Plot import plotCN0
+from Plot import plotCN0diff
 from GNSS import gpstime
 from datetime import date
 __author__ = 'amuls'
@@ -46,7 +46,6 @@ def treatCmdOpts(argv):
     parser.add_argument('-f','--file', help='Name of SBF file', required=True)
     parser.add_argument('-d', '--dir', help='Directory of SBF file (defaults to .)', required=False, default='.')
     parser.add_argument('-o','--overwrite', help='overwrite intermediate files (default False)', action='store_true', required=False)
-    parser.add_argument('-j','--jamming', help='setting the config file for jamming periods', required=False, default='.')
     parser.add_argument('-v', '--verbose', help='displays interactive graphs and increase output verbosity (default False)', action='store_true', required=False)
     args = parser.parse_args()
 
@@ -56,7 +55,7 @@ def treatCmdOpts(argv):
     # print ('verbose: %s' % args.verbose)
     # print ('overwrite: %s' % args.overwrite)
 
-    return args.file, args.dir, args.overwrite, args.jamming, args.verbose
+    return args.file, args.dir, args.overwrite, args.verbose
 
 
 def createFullTimeSpan(towMeas):
@@ -77,13 +76,13 @@ def createFullTimeSpan(towMeas):
     spanTOW = np.arange(TOWMin, TOWMax + 1.)
     print('spanTOW = %f => %f (%d)' % (spanTOW[0], spanTOW[-1], np.size(spanTOW)))
     # and convert to UTC
-    spanUTC = plotCN0.TOW2UTC(WkNr, spanTOW)
+    spanUTC = plotCN0diff.TOW2UTC(WkNr, spanTOW)
     print('spanUTC = %s => %s (%d)' % (spanUTC[0], spanUTC[-1], np.size(spanUTC)))
 
     return spanTOW, spanUTC
 
 
-def extractTOWandCN0(SVprn, measData, TOWmeas, CN0meas, verbose=False):
+def extractTOWandCN0(SVprn, measData, TOWmeas, CN0diff, verbose=False):
     '''
     extractTOWandCN0 axtracts for a SV the TOW and CN0 values observed per signaltype
     Parameters:
@@ -108,6 +107,7 @@ def extractTOWandCN0(SVprn, measData, TOWmeas, CN0meas, verbose=False):
     signalTypesSVprn = sbf2stf.observedSignalTypes(dataMeasSVprn['MEAS_SIGNALTYPE'], verbose)
 
     indexSignalType = []
+    diff = []
 
     for index, signalType in enumerate(signalTypesSVprn):
         if verbose:
@@ -116,33 +116,14 @@ def extractTOWandCN0(SVprn, measData, TOWmeas, CN0meas, verbose=False):
         # get the observation time span and observed CN0 for this SVprn and SignalType
         indexSignalType.extend(np.array(sbf2stf.indicesSignalType(signalType, dataMeasSVprn['MEAS_SIGNALTYPE'], verbose)))
         TOWmeas.append(dataMeasSVprn[indexSignalType[index]]['MEAS_TOW'])
-        CN0meas.append(dataMeasSVprn[indexSignalType[index]]['MEAS_CN0'])
-
-        # # print last added values
-        if True:
-            print ('TOWmeas[%d] = %d => %d (%d)' % (len(TOWmeas), TOWmeas[-1][0], TOWmeas[-1][-1], np.size(TOWmeas[-1])))
-            print ('CN0meas[%d] = %f => %s (%d)' % (len(CN0meas), CN0meas[-1][0], CN0meas[-1][-1], np.size(CN0meas[-1])))
-
+        t = dataMeasSVprn[indexSignalType[index]]['MEAS_CN0']
+        for i in range(len(t) - 1):
+            diff.append([t[i + 1] - t[i]])
+        print(len(diff))
+        CN0diff.append(diff)
+        print(len(CN0diff), 'ASDA')
+    sys.exit(0)
     return signalTypesSVprn
-
-
-def extractELEVATION(SVprn, dataVisibility, TOWmeas, verbose=False):
-    '''
-    extractELEVATION Extracts for a SV the elevation values observed
-    Parameters:
-        SVprn: the ID for this SV
-        dataVisibility: the measurement data from SatVisibility_1
-    Returns:
-        the elevation for this SVprn
-    '''
-    indexSVprnVis = sbf2stf.indicesSatellite(SVprn, dataVisibility['VISIBILITY_SVID'], verbose)
-    dataVisibilitySVprn = dataVisibility[indexSVprnVis]['VISIBILITY_ELEVATION']
-    TOWmeas = dataVisibility[indexSVprnVis]['VISIBILITY_TOW']
-    # print(SVprn)
-    # print(dataVisibilitySVprn)
-    # sys.exit(0)
-
-    return dataVisibilitySVprn, TOWmeas
 
 
 def fillDataGaps(spanTOW, TOW, CN0):
@@ -175,7 +156,7 @@ def fillDataGaps(spanTOW, TOW, CN0):
 
 if __name__ == "__main__":
     # treat command line options
-    nameSBF, dirSBF, overwrite, jamming, verbose = treatCmdOpts(sys.argv)
+    nameSBF, dirSBF, overwrite, verbose = treatCmdOpts(sys.argv)
 
     # change to the directory dirSBF if it exists
     workDir = os.getcwd()
@@ -200,17 +181,7 @@ if __name__ == "__main__":
     # execute the conversion sbf2stf needed
     SBF2STFOPTS = ['MeasEpoch_2', 'MeasExtra_1', 'SatVisibility_1']     # options for conversion, ORDER IMPORTANT!!
     sbf2stfConverted = sbf2stf.runSBF2STF(nameSBF, SBF2STFOPTS, overwrite, verbose)
-    print('SBF2STFOPTS = %s' % SBF2STFOPTS)
-    # check the blocks for errors like 1.INF
-    for i in sbf2stfConverted:
-        f = open(i, 'r')
-        filedata = f.read()
-        f.close()
-        newdata = filedata.replace('1.#INF', '').replace('-1.#IND', '')
-        f = open(i, 'w')
-        f.write(newdata)
-        f.close()
-    # extracts data in numpy array
+    # print('SBF2STFOPTS = %s' % SBF2STFOPTS)
     for option in SBF2STFOPTS:
         # print('option = %s - %d' % (option, SBF2STFOPTS.index(option)))
         if option == 'MeasEpoch_2':
@@ -225,20 +196,6 @@ if __name__ == "__main__":
         else:
             print('  wrong option %s given.' % option)
             sys.exit(E_WRONG_OPTION)
-
-    # preparing jamming file
-    JammingValues = []
-    JammingStartTime = []
-    JammingEndTime = []
-    if jamming is not '.':
-        dataJamming = sbf2stf.readJammingFile(jamming)
-        for i in dataJamming['JAMMING_VALUE']:
-            JammingValues.append(i)
-        for i in dataJamming['START_TIME']:
-            JammingStartTime.append(gpstime.UTCFromString(2015, 12, 3, i))
-            print(JammingStartTime)
-        for i in dataJamming['END_TIME']:
-            JammingEndTime.append(gpstime.UTCFromString(2015, 12, 3, i))
 
     # check whether the same signaltypes are on corresponsing lines after sorting
     if not sbf2stf.verifySignalTypeOrder(dataMeas['MEAS_SIGNALTYPE'], dataExtra['EXTRA_SIGNALTYPE'], dataMeas['MEAS_TOW'], verbose):
@@ -303,6 +260,7 @@ if __name__ == "__main__":
 
     # adjust the measCNO arrays to fill with NaN as to fit the TOWall array for plotting
     measCN0span = []
+    measCN0diff = []
 
     for i in range(len(measCN0)):
         measCN0span.append(fillDataGaps(TOWspan, measTOW[i], measCN0[i]))
@@ -310,11 +268,9 @@ if __name__ == "__main__":
     for i in range(len(measCN0)):
         print('measCN0span[%d] = %s (%d)' % (i, measCN0span[i], len(measCN0span[i])))
     # creates the lists of elevation and the coresponding Tow
-    fSV = SVIDsVis[0]
-    for i in SVIDsVis:
-            ELEVATIONVisibility, ELEVATIONTow = extractELEVATION(i, dataVisibility, visibilityTOW, verbose)
-            ELEVATIONTowUTC = plotCN0.TOW2UTC(1873, ELEVATIONTow)
-            plotCN0.plotCN0(i, fSV, SVIDlist, STlist, ELEVATIONTowUTC, UTCspan, JammingStartTime, JammingEndTime, measCN0span, ELEVATIONVisibility, JammingValues, dateString, verbose)
+    for i in range(len(measCN0span)):
+        measCN0diff.append(measCN0span[i] - measCN0span[i - 1])
+    print(measCN0)
+    plotCN0diff.plotCN0diff(SVIDlist, STlist, UTCspan, measCN0diff, dateString, verbose)
     # create the plots for each signaltype
-    sys.exit(0)
     sys.exit(E_SUCCESS)

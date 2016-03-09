@@ -22,7 +22,14 @@ GNSSSignals = {0: {'name': 'GPS_L1-CA', 'freq': str(mGNSS.fGPS_L1)},
                20: {'name': 'GAL_E5a', 'freq': str(mGNSS.fGAL_E5A)},
                21: {'name': 'GAL_E5b', 'freq': str(mGNSS.fGAL_E5B)},
                22: {'name': 'GAL_E5', 'freq': str(mGNSS.fGAL_E5)},
-               24: {'name': 'GEO_L1', 'freq': str(mGNSS.fGEO_L1)}
+               23: {'name': 'MSS', 'freq': str(mGNSS.Res)},
+               24: {'name': 'GEO_L1', 'freq': str(mGNSS.fGEO_L1)},
+               25: {'name': 'GEO_L5', 'freq': str(mGNSS.fGEO_L5)},
+               26: {'name': 'QZSS_L5', 'freq': str(mGNSS.fQZSS_L5)},
+               28: {'name': 'CMP_L1', 'freq': str(mGNSS.fCMP_L1)},
+               29: {'name': 'CMP_E5b', 'freq': str(mGNSS.fCMP_E5b)},
+               30: {'name': 'Reserved30', 'freq': str(mGNSS.Res)},
+               31: {'name': 'Reserved31', 'freq': str(mGNSS.Res)}
                }
 
 # names and format for MeasEpoch_2
@@ -79,7 +86,7 @@ def svPRN(prnSSN):
     elif prnSSN in range(120, 139):
         return ('SBAS', 'S', prnSSN)
     else:
-        return ('None', 'N', '0')
+        return ('None', 'N', 0)
 
     # for testing out
     # for gnssSignal in ssnConstants.GNSSSignals:

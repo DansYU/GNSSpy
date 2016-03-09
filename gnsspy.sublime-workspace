@@ -4,6 +4,42 @@
 		"selected_items":
 		[
 			[
+				"signalType",
+				"signalTypesSVID"
+			],
+			[
+				"lliTO",
+				"lliTOWComb"
+			],
+			[
+				"MEAS",
+				"MEAS_TOW"
+			],
+			[
+				"llito",
+				"lliTOWConb"
+			],
+			[
+				"llit",
+				"lliTOWConb"
+			],
+			[
+				"lliT",
+				"lliTOWConb"
+			],
+			[
+				"ll",
+				"lliTOWs"
+			],
+			[
+				"ran",
+				"range〔function〕"
+			],
+			[
+				"datamea",
+				"dataMeasSVID"
+			],
+			[
 				"sbf2",
 				"sbf2SidePeak"
 			],
@@ -62,10 +98,6 @@
 			[
 				"ex",
 				"exit	function"
-			],
-			[
-				"ran",
-				"range	function"
 			],
 			[
 				"signal",
@@ -288,18 +320,18 @@
 	"buffers":
 	[
 		{
-			"file": "scripts/GNSS/wgs84.py",
+			"file": "scripts/sbf2LockTime.py",
 			"settings":
 			{
-				"buffer_size": 12458,
+				"buffer_size": 9289,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "scripts/Plot/plotCN0.py",
+			"file": "scripts/SSN/sbf2stf.py",
 			"settings":
 			{
-				"buffer_size": 11174,
+				"buffer_size": 22239,
 				"line_ending": "Unix"
 			}
 		},
@@ -307,26 +339,50 @@
 			"file": "scripts/Plot/plotLockTime.py",
 			"settings":
 			{
-				"buffer_size": 4439,
+				"buffer_size": 4519,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "scripts/sbf2CN0.py",
+			"file": "SSN/data/15197/GAL-E26-GAL_L1A.csv",
 			"settings":
 			{
-				"buffer_size": 12551,
+				"buffer_size": 351405,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "Searching 186 files for \"plotLockTime\"\n\n/home/amuls/amPython/GNSSpy/scripts/sbf2SidePeak.py:\n    8  from SSN import sbf2stf\n    9  from Plot import plotSidePeaks\n   10: from Plot import plotLockTime\n   11  from GNSS import gpstime\n   12  from SSN import ssnConstants as mSSN\n   ..\n  175  \n  176          # plot the locktimes for this SVID for all SignalTypes\n  177:         plotLockTime.plotLockTime(SVID, signalTypesSVID, dataMeasSVIDSignalType, lliIndicators, lliTOWs, verbose)\n  178          print('-' * 25)\n  179  \n\n/home/amuls/amPython/GNSSpy/scripts/Plot/plotLockTime.py:\n    8  \n    9  \n   10: def plotLockTime(SVID, signalTypes, dataMeasSVID, lliIndices, lliTOWs, verbose):\n   11      \"\"\"\n   12:     plotLockTime creates a plot of the locktime and indicates loss of locks\n   13  \n   14      Parameters:\n   ..\n   19          verbose: display interactive plot\n   20      \"\"\"\n   21:     # print('\\nplotLockTime' + '-' * 25)\n   22      gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVID)\n   23  \n\n/home/amuls/amPython/GNSSpy/SSN/data/15182/BEGP1820.15_:\n    File too large, skipping\n\n/home/amuls/amPython/GNSSpy/SSN/data/15286/BEGP2860.15_:\n    File too large, skipping\n\n/home/amuls/amPython/GNSSpy/SSN/data/15287/BEGP2870.15_:\n    File too large, skipping\n\n/home/amuls/amPython/GNSSpy/SSN/data/15300/SEPT3000.15_:\n    File too large, skipping\n\n6 matches across 2 files\n",
+			"file": "SSN/data/15197/GAL-E26-GAL_E6A.csv",
 			"settings":
 			{
-				"buffer_size": 1374,
+				"buffer_size": 131830,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "scripts/SSN/ssnConstants.py",
+			"settings":
+			{
+				"buffer_size": 4700,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "SBFFile: BEGP1970.15_\ndir = /home/amuls/amPython/GNSSpy/SSN/data/15197/\nverbose: True\noverwrite: False\nExecuting /home/amuls/TURcontrol/bin/sbf2stf on BEGP1970.15_\n  Re-using files: ['BEGP1970.15__MeasEpoch_2.stf', 'BEGP1970.15__MeasExtra_1.stf']\n  SBF2STF conversion done. Returning files ['BEGP1970.15__MeasEpoch_2.stf', 'BEGP1970.15__MeasExtra_1.stf']\n    Reading and sorting MeasEpoch_2 data\n    Reading and sorting MeasExtra_1 data\n    Checking SignalType order\n    Extracting list of observed satellites: E18 (88), E19 (89), E20 (90), E26 (96)\n==================================================\nSVID = 88 - GAL - E18\n    Extracting data for SVID 88\nindexSVID = [    1     2     6 ..., 35113 35117 35121]\nnameDataMeasSVID = 88.csv\ndataMeasSVID = [ (1853, 374400.0, 9, 88, 255, 0, 16, 32511308.111, 170848082.4123, -1617.405588, 51.25, 254L, 0, 3)\n (1853, 374400.0, 9, 88, 255, 0, 18, 32511306.283, 138675401.3183, -1312.8215, 51.25, 5057L, 0, 3)\n (1853, 374401.0, 9, 88, 255, 0, 16, 32511616.036000002, 170849700.5706, -1618.9143568, 51.25, 254L, 0, 3)\n ...,\n (1853, 381519.0, 9, 88, 255, 0, 16, 39403118.361, 207064715.7509, -6528.2637, 29.75, 21L, 0, 3)\n (1853, 381520.0, 9, 88, 255, 0, 16, 39404360.81, 207071244.0859, -6528.3462, 30.5, 22L, 0, 3)\n (1853, 381521.0, 9, 88, 255, 0, 16, 39405603.144, 207077772.3043, -6528.1582, 26.5, 23L, 0, 3)]\n      Extracting list of observed signal types: GAL_L1A (16), GAL_E6A (18)\nsignalTypesSVID = [16, 18]\n-------------------------\nsignalType = 16  index=0 - name = GAL_L1A\n\n        Getting data for SignalType 16\ntype indexSignalType = <type 'list'>\ntype indexSignalType[index] = <type 'numpy.ndarray'>\nindexSignalType = [array([    0,     2,     4, ..., 13871, 13872, 13873])]\nindexSignalType[index] = [    0     2     4 ..., 13871 13872 13873] (len = 7059)\nindexSignalType[index][2] = 4\n\ndataMeasSVIDSignalType[index]['MEAS_LOCKTIME'] = [254 254 254 ...,  21  22  23] (len = 7059)\ndataMeasSVIDSignalType[index]['MEAS_LOCKTIME'][2] = 254\n\ndataMeasSVIDSignalType[index][2] = (1853, 374402.0, 9, 88, 255, 0, 16, 32511924.251, 170851320.2149, -1620.3879368, 51.0, 254L, 0, 3)\n\ndataMeasSVIDSignalType[index] = [ (1853, 374400.0, 9, 88, 255, 0, 16, 32511308.111, 170848082.4123, -1617.405588, 51.25, 254L, 0, 3)\n (1853, 374401.0, 9, 88, 255, 0, 16, 32511616.036000002, 170849700.5706, -1618.9143568, 51.25, 254L, 0, 3)\n (1853, 374402.0, 9, 88, 255, 0, 16, 32511924.251, 170851320.2149, -1620.3879368, 51.0, 254L, 0, 3)\n ...,\n (1853, 381519.0, 9, 88, 255, 0, 16, 39403118.361, 207064715.7509, -6528.2637, 29.75, 21L, 0, 3)\n (1853, 381520.0, 9, 88, 255, 0, 16, 39404360.81, 207071244.0859, -6528.3462, 30.5, 22L, 0, 3)\n (1853, 381521.0, 9, 88, 255, 0, 16, 39405603.144, 207077772.3043, -6528.1582, 26.5, 23L, 0, 3)]\n\n  Looking for Loss of Lock\ntype lliIndicators = <type 'list'>\ntype lliIndicators[index] = <type 'numpy.ndarray'>\nlliIndicators[index] = [4218 6859 7029 7036] (4)\nlliTOWs[0] = [ 378618.000  381264.000  381442.000  381469.000] (4)\nfirstTOW[0] = 374400.0\n-------------------------\nsignalType = 18  index=1 - name = GAL_E6A\n\n        Getting data for SignalType 18\ntype indexSignalType = <type 'list'>\ntype indexSignalType[index] = <type 'numpy.ndarray'>\nindexSignalType = [array([    0,     2,     4, ..., 13871, 13872, 13873]), array([    1,     3,     5, ..., 13839, 13841, 13843])]\nindexSignalType[index] = [    1     3     5 ..., 13839 13841 13843] (len = 6815)\nindexSignalType[index][2] = 5\n\ndataMeasSVIDSignalType[index]['MEAS_LOCKTIME'] = [5057 5058 5059 ...,   12   13   14] (len = 6815)\ndataMeasSVIDSignalType[index]['MEAS_LOCKTIME'][2] = 5059\n\ndataMeasSVIDSignalType[index][2] = (1853, 374402.0, 9, 88, 255, 0, 18, 32511922.419, 138678029.4059, -1315.2549, 51.25, 5059L, 0, 3)\n\ndataMeasSVIDSignalType[index] = [ (1853, 374400.0, 9, 88, 255, 0, 18, 32511306.283, 138675401.3183, -1312.8215, 51.25, 5057L, 0, 3)\n (1853, 374401.0, 9, 88, 255, 0, 18, 32511614.203, 138676714.7567, -1314.0524, 51.25, 5058L, 0, 3)\n (1853, 374402.0, 9, 88, 255, 0, 18, 32511922.419, 138678029.4059, -1315.2549, 51.25, 5059L, 0, 3)\n ...,\n (1853, 381439.0, 9, 88, 255, 0, 18, 39303691.289000005, 167647984.4972, -5302.5256299, 26.75, 12L, 0, 1)\n (1853, 381440.0, 9, 88, 255, 0, 18, 39304934.497999996, 167653287.0385, -5302.5421208, 25.5, 13L, 0, 1)\n (1853, 381441.0, 9, 88, 255, 0, 18, 39306177.681, 167658589.5101, -5302.4373571, 23.25, 14L, 0, 1)]\n\n  Looking for Loss of Lock\ntype lliIndicators = <type 'list'>\ntype lliIndicators[index] = <type 'numpy.ndarray'>\nlliIndicators[index] = [4218 6152 6389 6691 6702 6719 6741 6801] (8)\nlliTOWs[1] = [ 378618.000  380557.000  380830.000  381172.000  381243.000  381268.000\n  381308.000  381412.000] (8)\nfirstTOW[1] = 374400.0\nlliTOWComb = [ 374400.000  378618.000  380557.000  380830.000  381172.000  381243.000\n  381264.000  381268.000  381308.000  381412.000  381442.000  381469.000] (12)\ntype(lliTOWComb) = <type 'numpy.ndarray'>\nindexTOWComb[0] = [   0 4218 6152 6425 6767 6838 6859 6860 6895 6999 7029 7036] (12)\ndataLLI[0] = [ (1853, 374400.0, 9, 88, 255, 0, 16, 32511308.111, 170848082.4123, -1617.405588, 51.25, 254L, 0, 3)\n (1853, 378618.0, 9, 88, 255, 0, 16, 35872457.051, 188511008.9401, -5998.6810888, 47.0, 254L, 0, 3)\n (1853, 380557.0, 9, 88, 255, 0, 16, 38206517.265999995, 200776575.3775, -6522.0986, 37.0, 1936L, 0, 3)\n (1853, 380830.0, 9, 88, 255, 0, 16, 38545808.326, 202559553.5529, -6538.0029, 38.5, 2209L, 0, 3)\n (1853, 381172.0, 9, 88, 255, 0, 16, 38971516.207, 204796663.2572, -6541.5547, 31.25, 2551L, 0, 3)\n (1853, 381243.0, 9, 88, 255, 0, 16, 39059890.073, 205261070.6582, -6540.2075, 34.75, 2622L, 0, 3)\n (1853, 381264.0, 9, 88, 255, 0, 16, 39086024.807000004, 205398408.9463, -6539.4961, 23.5, 2643L, 0, 3)\n (1853, 381273.0, 9, 88, 255, 0, 16, 39097215.096, 205457265.9028, -6539.3647, 37.0, 2L, 0, 0)\n (1853, 381308.0, 9, 88, 255, 0, 16, 39140774.664, 205686125.3596, -6538.2222, 32.25, 37L, 0, 3)\n (1853, 381412.0, 9, 88, 255, 0, 16, 39270132.1, 206365901.5804, -6533.9487, 31.75, 141L, 0, 3)\n (1853, 381442.0, 9, 88, 255, 0, 16, 39307429.703999996, 206561901.769, -6532.6377, 28.0, 171L, 0, 3)\n (1853, 381469.0, 9, 88, 255, 0, 16, 39340980.582, 206738242.932, -6531.2158, 22.0, 9L, 0, 1)] (12)\nindexTOWComb[1] = [   0 4218 6152 6389 6691 6702 6715 6719 6741 6801 6815 6815] (12)\nTraceback (most recent call last):\n  File \"/home/amuls/amPython/GNSSpy/scripts/sbf2LockTime.py\", line 193, in <module>\n    dataLLI.append(dataMeasSVIDSignalType[index][indexTOWComb[index]])\nIndexError: index 6815 is out of bounds for axis 1 with size 6815\n[Finished in 1.5s with exit code 1]\n[shell_cmd: /home/amuls/virtenvs/GNSSpy/bin/python ~/amPython/GNSSpy/scripts/sbf2LockTime.py -f BEGP1970.15_ -d /home/amuls/amPython/GNSSpy/SSN/data/15197/ --verbose]\n[dir: /home/amuls/amPython/GNSSpy/scripts]\n[path: /opt/texbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/amuls/bin:/home/amuls/scripts:/home/amuls/.local/bin:/home/amuls/Documents/CURSUSSEN/scripts:/home/amuls/TURcontrol/bin:/home/amuls/MATLAB/R2013a/bin:/home/amuls/gpstk/bin]",
+			"settings":
+			{
+				"buffer_size": 7088,
 				"line_ending": "Unix",
-				"name": "Find Results",
+				"name": "Build output",
 				"scratch": true
+			}
+		},
+		{
+			"file": "gnsspy.sublime-project",
+			"settings":
+			{
+				"buffer_size": 1687,
+				"line_ending": "Unix"
 			}
 		},
 		{
@@ -338,34 +394,10 @@
 			}
 		},
 		{
-			"file": "/home/amuls/amPython/pyEphem/Setting Up Python Project.txt",
+			"file": "scripts/Plot/plotSidePeaks.py",
 			"settings":
 			{
-				"buffer_size": 1307,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "scripts/SSN/sbf2stf.py",
-			"settings":
-			{
-				"buffer_size": 21891,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/amuls/.gitconfig",
-			"settings":
-			{
-				"buffer_size": 414,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "gnsspy.sublime-project",
-			"settings":
-			{
-				"buffer_size": 1043,
+				"buffer_size": 6429,
 				"line_ending": "Unix"
 			}
 		}
@@ -409,10 +441,22 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 392.0,
-		"last_filter": "add",
+		"height": 75.0,
+		"last_filter": "build view",
 		"selected_items":
 		[
+			[
+				"build view",
+				"Disable/Enable buildview for this window"
+			],
+			[
+				"build",
+				"Build: Primary Quick Build"
+			],
+			[
+				"activat",
+				"Virtualenv: Activate"
+			],
 			[
 				"add",
 				"Virtualenv: Add directory"
@@ -500,10 +544,6 @@
 			[
 				"distra",
 				"Dictionaries: Set Language (Current View)"
-			],
-			[
-				"activat",
-				"Virtualenv: Activate"
 			],
 			[
 				"font",
@@ -669,19 +709,30 @@
 	],
 	"file_history":
 	[
+		"/home/amuls/Documents/BERTRIX/SCENARIOS/L1AMNOISE/L1_AM_Jamming_Periods.csv",
+		"/home/amuls/Documents/BERTRIX/SCENARIOS/DATA-SPLIT-INFO-MERGED.txt",
+		"/home/amuls/amPython/GNSSpy/SSN/data/15197/GAL-E18-GAL_L1A.csv",
+		"/home/amuls/amPython/GNSSpy/SSN/data/15197/GAL-E18-GAL_E6A.csv",
+		"/home/amuls/Downloads/filledmarker_demo.py",
+		"/home/amuls/amPython/GNSSpy/SSN/data/15197/BEGP1970.15__MeasEpoch_2.stf",
+		"/home/amuls/amPython/GNSSpy/SSN/data/15197/88-16.csv",
+		"/home/amuls/amPython/GNSSpy/SSN/data/15197/88-18.csv",
+		"/home/amuls/amPython/GNSSpy/SSN/data/15197/88.csv",
+		"/home/amuls/amPython/GNSSpy/scripts/sbf2CN0.py",
+		"/home/amuls/amPython/GNSSpy/scripts/Plot/plotCN0.py",
+		"/home/amuls/.gitconfig",
+		"/home/amuls/amPython/GNSSpy/scripts/GNSS/wgs84.py",
+		"/home/amuls/amPython/pyEphem/Setting Up Python Project.txt",
 		"/home/amuls/amPython/GNSSpy/scripts/SSN/sbf2stf.py",
 		"/home/amuls/BERTRIX/DATA/15337/BRTX3370.15__EndOfPVT_1.stf",
 		"/home/amuls/amPython/GNSSpy/Data/splitrinex-BERTRIX.conf",
 		"/home/amuls/scripts/git-diff.sh",
-		"/home/amuls/.gitconfig",
 		"/tmp/sublime-svn-1455785975/SVN",
 		"/home/amuls/.subversion/config",
 		"/home/amuls/amPython/pyEphem/requirements.txt",
 		"/home/amuls/scripts/svn-ssh.sh",
 		"/home/amuls/amPython/GNSSpy/scripts/SSN/ssnConstants.py",
 		"/home/amuls/amPython/GNSSpy/scripts/sbf2SidePeak.py",
-		"/home/amuls/amPython/GNSSpy/scripts/Plot/plotCN0.py",
-		"/home/amuls/amPython/GNSSpy/scripts/sbf2CN0.py",
 		"/home/amuls/amPython/GNSSpy/scripts/GNSS/gpstime.py",
 		"/home/amuls/amPython/GNSSpy/scripts/sbf2SkyPlot.py",
 		"/home/amuls/amPython/GNSSpy/scripts/Plot/plotElevAzim.py",
@@ -707,7 +758,6 @@
 		"/home/amuls/virtenvs/GNSSpy/bin/postactivate",
 		"/home/amuls/Documents/PERSONAL/Informatics related/ISO/Mathworks_Matlab_R2013a_(8.01)_Linux_MacOS_x64/serial/Readme.txt",
 		"/home/amuls/amPython/GNSSpy/scripts/GNSS/gnss.py",
-		"/home/amuls/amPython/GNSSpy/scripts/GNSS/wgs84.py",
 		"/home/amuls/amPython/GNSSpy/scripts/Examples/searchsorted.py",
 		"/home/amuls/STProj/gnsspy.sublime-project",
 		"/home/amuls/enc/GALILEO/PRSunc/BE-GPIOS/BelSPO-GSTP/GSTP2014exe/DOCUMENTS/Reports/MeasCampaign/BELJammingTest/jamming.tex",
@@ -786,17 +836,7 @@
 		"/home/amuls/.config/sublime-text-3/Packages/Colorsublime-Themes/CodeWarrior.tmTheme",
 		"/tmp/sublime-svn-1433418752/SVN",
 		"/home/amuls/GNSSpy/scripts/lineread.py",
-		"/home/amuls/.config/sublime-text-3/Packages/Colorsublime-Themes/Neon amuls Scheme.sublime-package",
-		"/home/amuls/texmf/tex/latex/rmasty/rmaciss.sty",
-		"/home/amuls/Documents/CISS/HoD/LETTERS/HoD2014/BE-GPIOS-verklaring.tex",
-		"/home/amuls/Documents/CISS/HoD/LETTERS/HoD2015/acronyms.tex",
-		"/home/amuls/Documents/CISS/HoD/LETTERS/HoD2015/Vooropzeg-Vinciane-Yann.tex",
-		"/home/amuls/Documents/CURSUSSEN/SVN.commands",
-		"/home/amuls/Dropbox/GNSSpy/scripts/sbf2Meas.py",
-		"/home/amuls/Dropbox/GNSSpy/scripts/sbf2Meas.pyc",
-		"/home/amuls/Dropbox/NMULS/Contactformulier/CSS/stylesheet_contactformulier.css",
-		"/home/amuls/Dropbox/NMULS/Contactformulier/index.html",
-		"/home/amuls/Dropbox/NMULS/Speciale Effecten/css/stylesheet_speciale_effecten.css"
+		"/home/amuls/.config/sublime-text-3/Packages/Colorsublime-Themes/Neon amuls Scheme.sublime-package"
 	],
 	"find":
 	{
@@ -819,6 +859,47 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"dataLLI",
+			"llitowcom",
+			"print",
+			"lliTOWComb",
+			"1853,382041",
+			"indexTOWComb",
+			"indexTOXComb",
+			"firstTOW",
+			"lliTOWConb",
+			"380557.0",
+			"mFilledMarkers",
+			"fs",
+			"signalType % len(",
+			"378618.0",
+			"381412.000",
+			"MEAS_LOCKTIME",
+			"4294967045",
+			"diffLockTime",
+			"380580",
+			"print '",
+			"print (",
+			"print",
+			"print ",
+			"plotLockTime",
+			"[0]",
+			",",
+			"dataMeasSVID",
+			"nameDataMeasSVID",
+			"f8",
+			"u1",
+			",",
+			"print \"",
+			"print",
+			"colFmtMeasEpoch",
+			"MEAS_CODE",
+			")index",
+			"-f /home/amuls/amPython/GNSSpy/SSN/data/15197/BEGP1970.15_",
+			"sbf2DOP",
+			"sys",
+			"plotLock",
+			"sbf2SidePeak",
 			"Users/ed/.virtualenvs/curio\"",
 			"verbose):",
 			"'''",
@@ -905,48 +986,7 @@
 			"sorted",
 			"sorted_x",
 			"x",
-			"index",
-			"x",
-			"utc",
-			"UTC",
-			"utc",
-			"WKNr",
-			"utc",
-			"UTC",
-			"utc",
-			"array",
-			"UTC",
-			"utc",
-			"UTC",
-			"utc",
-			"TOWallNew",
-			"TOWall",
-			"np",
-			"TOWall",
-			"l",
-			"            TOWMin = np.min(TOWall)\n",
-			"TOWall",
-			"[index]",
-			"\\subsection",
-			"index",
-			"TOW",
-			"sp",
-			"adj",
-			"#%",
-			"count",
-			"xfmt",
-			"subPlots",
-			"Last",
-			"GNSSSignals",
-			"virtenvs",
-			"GNSSSignals",
-			"E_FILE_NOT_EXIST",
-			"usage",
-			"treatCmdOpts2",
-			"overwrite",
-			"\"",
-			"np.",
-			" )"
+			"index"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -965,114 +1005,24 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "scripts/GNSS/wgs84.py",
+					"file": "scripts/sbf2LockTime.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12458,
+						"buffer_size": 9289,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1157,
-								1157
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content"
-							],
-							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "scripts/Plot/plotCN0.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11174,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								240,
-								240
+								7947,
+								7947
 							]
 						],
 						"settings":
@@ -1081,36 +1031,16 @@
 							"auto_complete": false,
 							"bh_regions":
 							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
@@ -1121,32 +1051,143 @@
 								"bh_square_open",
 								"bh_square_close",
 								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"bv_enabled": true,
+							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
+							"open_with_edit": true,
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1872.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "scripts/SSN/sbf2stf.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 22239,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								16851,
+								16851
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_complete": false,
+							"bh_regions":
+							[
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
 								"bh_round",
 								"bh_round_center",
 								"bh_round_open",
 								"bh_round_close",
-								"bh_round_content"
+								"bh_round_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
 							],
 							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
-							"syntax": "Packages/Python/Python.sublime-syntax",
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 7502.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -1155,15 +1196,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4439,
+						"buffer_size": 4519,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								602,
-								602
+								947,
+								947
 							]
 						],
 						"settings":
@@ -1172,36 +1213,16 @@
 							"auto_complete": false,
 							"bh_regions":
 							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
@@ -1212,21 +1233,41 @@
 								"bh_square_open",
 								"bh_square_close",
 								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
 								"bh_round",
 								"bh_round_center",
 								"bh_round_open",
 								"bh_round_close",
-								"bh_round_content"
+								"bh_round_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
 							],
 							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
 							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
@@ -1237,62 +1278,41 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "scripts/sbf2CN0.py",
+					"file": "SSN/data/15197/GAL-E26-GAL_L1A.csv",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12551,
+						"buffer_size": 351405,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								12329,
-								12329
+								1267,
+								1267
 							]
 						],
 						"settings":
 						{
 							"BracketHighlighterBusy": false,
-							"auto_complete": false,
 							"bh_regions":
 							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
@@ -1303,87 +1323,6 @@
 								"bh_square_open",
 								"bh_square_close",
 								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content"
-							],
-							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 3369.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1374,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										186,
-										198
-									],
-									[
-										374,
-										386
-									],
-									[
-										387,
-										399
-									],
-									[
-										605,
-										617
-									],
-									[
-										708,
-										720
-									],
-									[
-										903,
-										915
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								382,
-								382
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
@@ -1394,6 +1333,21 @@
 								"bh_single_quote_open",
 								"bh_single_quote_close",
 								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
 								"bh_c_define",
 								"bh_c_define_center",
 								"bh_c_define_open",
@@ -1403,236 +1357,9 @@
 								"bh_tag_center",
 								"bh_tag_open",
 								"bh_tag_close",
-								"bh_tag_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content"
+								"bh_tag_content"
 							],
-							"default_dir": "/home/amuls/amPython/GNSSpy/scripts",
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 1,
-							"result_base_dir": "",
-							"result_file_regex": "^([^ 	].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "scripts/sbf2SidePeak.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9715,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2751,
-								2751
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"auto_complete": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content"
-							],
-							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 624.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "/home/amuls/amPython/pyEphem/Setting Up Python Project.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1307,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								998,
-								998
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"auto_complete": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content"
-							],
-							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
-							"is_xml": false,
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Advanced CSV/AdvancedCSV.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1642,58 +1369,37 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "scripts/SSN/sbf2stf.py",
+					"buffer": 4,
+					"file": "SSN/data/15197/GAL-E26-GAL_E6A.csv",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 21891,
+						"buffer_size": 131830,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3239,
-								3239
+								131830,
+								131830
 							]
 						],
 						"settings":
 						{
 							"BracketHighlighterBusy": false,
-							"auto_complete": false,
 							"bh_regions":
 							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
@@ -1704,41 +1410,333 @@
 								"bh_square_open",
 								"bh_square_close",
 								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"syntax": "Packages/Advanced CSV/AdvancedCSV.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 22075.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "scripts/SSN/ssnConstants.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4700,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1566,
+								1566
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_complete": false,
+							"bh_regions":
+							[
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
 								"bh_round",
 								"bh_round_center",
 								"bh_round_open",
 								"bh_round_close",
-								"bh_round_content"
+								"bh_round_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
 							],
 							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
 							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
-							"tab_size": 4,
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1431.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 6,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 6,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7088,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4855,
+								4855
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
+							"default_dir": "/home/amuls/amPython/GNSSpy/scripts",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 898.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "gnsspy.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1687,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								956,
+								956
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_complete": true,
+							"bh_regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JSON (JavaScriptNext).tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
 					"buffer": 8,
-					"file": "/home/amuls/.gitconfig",
+					"file": "scripts/sbf2SidePeak.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 414,
+						"buffer_size": 9715,
 						"regions":
 						{
 						},
@@ -1752,53 +1750,34 @@
 						"settings":
 						{
 							"BracketHighlighterBusy": false,
+							"auto_complete": false,
 							"bh_regions":
 							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
 								"bh_regex_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
 								"bh_single_quote",
 								"bh_single_quote_center",
 								"bh_single_quote_open",
@@ -1808,78 +1787,72 @@
 								"bh_unmatched_center",
 								"bh_unmatched_open",
 								"bh_unmatched_close",
-								"bh_unmatched_content"
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
 							],
 							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
-							"syntax": "Packages/ShellScript/Shell-Unix-Generic.sublime-syntax",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 8,
 					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 0,
-			"sheets":
-			[
+				},
 				{
 					"buffer": 9,
-					"file": "gnsspy.sublime-project",
+					"file": "scripts/Plot/plotSidePeaks.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1043,
+						"buffer_size": 6429,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								50,
-								322
+								6350,
+								6350
 							]
 						],
 						"settings":
 						{
 							"BracketHighlighterBusy": false,
-							"auto_complete": true,
 							"bh_regions":
 							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
@@ -1890,30 +1863,52 @@
 								"bh_square_open",
 								"bh_square_close",
 								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
 								"bh_round",
 								"bh_round_center",
 								"bh_round_open",
 								"bh_round_close",
-								"bh_round_content"
+								"bh_round_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
 							],
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JSON (JavaScriptNext).tmLanguage",
-							"translate_tabs_to_spaces": false
+							"color_scheme": "Packages/User/Color Highlighter/themes/zenburn (Flake8Lint) (SL).tmTheme",
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1170.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 7,
 					"type": "text"
 				}
 			]
@@ -1985,7 +1980,7 @@
 	{
 		"height": 213.0
 	},
-	"pinned_build_system": "sbf2SidePeak help",
+	"pinned_build_system": "sbf2LockTime BEGP1970.15_",
 	"project": "gnsspy.sublime-project",
 	"replace":
 	{
@@ -2030,7 +2025,7 @@
 	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 310.0,
 	"status_bar_visible": true,
 	"template_settings":

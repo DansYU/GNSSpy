@@ -5,7 +5,6 @@ import os
 import numpy as np
 import argparse
 import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt
 
 from SSN import sbf2stf
 from SSN import ssnConstants as mSSN
@@ -27,7 +26,7 @@ E_FAILURE = 99
 
 # # get startup path
 # ospath = sys.path.append(os.path.join(os.path.dirname(sys.argv[0]), "subfolder"))
-# print sys.argv[0], ospath
+# print(sys.argv[0], ospath)
 
 
 # treat the arguments passed
@@ -46,10 +45,10 @@ def treatCmdOpts(argv):
     args = parser.parse_args()
 
     # show values
-    print ('SBFFile: %s' % args.file)
-    print ('dir = %s' % args.dir)
-    print ('verbose: %s' % args.verbose)
-    print ('overwrite: %s' % args.overwrite)
+    print('SBFFile: %s' % args.file)
+    print('dir = %s' % args.dir)
+    print('verbose: %s' % args.verbose)
+    print('overwrite: %s' % args.overwrite)
 
     return args.file, args.dir, args.overwrite, args.verbose
 
@@ -66,7 +65,7 @@ if __name__ == "__main__":
     if dirSBF is not '.':
         workDir = os.path.normpath(os.path.join(workDir, dirSBF))
 
-    # print ('workDir = %s' % workDir)
+    # print('workDir = %s' % workDir)
     if not os.path.exists(workDir):
         sys.stderr.write('Directory %s does not exists. Exiting.\n' % workDir)
         sys.exit(E_DIR_NOT_EXIST)
@@ -74,8 +73,8 @@ if __name__ == "__main__":
         if os.chdir(workDir) is False:
             sys.exit('Problem changing to directory %s. Exiting.\n' % workDir)
 
-    # print ('curDir = %s' % os.getcwd())
-    # print ('SBF = %s' % os.path.isfile(nameSBF))
+    # print('curDir = %s' % os.getcwd())
+    # print('SBF = %s' % os.path.isfile(nameSBF))
 
     # check whether the SBF datafile exists
     if not os.path.isfile(nameSBF):
@@ -86,9 +85,9 @@ if __name__ == "__main__":
     SBF2STFOPTS = ['MeasEpoch_2', 'MeasExtra_1']     # options for conversion, ORDER IMPORTANT!!
     sbf2stfConverted = sbf2stf.runSBF2STF(nameSBF, SBF2STFOPTS, overwrite, verbose)
 
-    # print 'SBF2STFOPTS = %s' % SBF2STFOPTS
+    # print('SBF2STFOPTS = %s' % SBF2STFOPTS)
     for option in SBF2STFOPTS:
-        # print 'option = %s - %d' % (option, SBF2STFOPTS.index(option))
+        # print('option = %s - %d' % (option, SBF2STFOPTS.index(option)))
         if option == 'MeasEpoch_2':
             # read the MeasEpoch data into a numpy array
             dataMeas = sbf2stf.readMeasEpoch(sbf2stfConverted[SBF2STFOPTS.index(option)], verbose)
@@ -105,7 +104,7 @@ if __name__ == "__main__":
 
     # correct the smoothed PR Code and work with the raw PR
     dataMeas['MEAS_CODE'] = sbf2stf.removeSmoothing(dataMeas['MEAS_CODE'], dataExtra['EXTRA_SMOOTHINGCORR'], dataExtra['EXTRA_MPCORR'])
-    # print 'dataMeas['MEAS_CODE'] = %s\n' % dataMeas['MEAS_CODE']
+    # print('dataMeas['MEAS_CODE'] = %s\n' % dataMeas['MEAS_CODE'])
 
     # find list of SVIDs observed
     SVIDs = sbf2stf.observedSatellites(dataMeas['MEAS_SVID'], verbose)
@@ -126,7 +125,7 @@ if __name__ == "__main__":
         np.savetxt(nameDataMeasSVID, dataMeasSVID, fmt='%i,%.1f,%i,%i,%i,%i,%i,%.2f,%.2f,%.2f,%.2f,%i,%i,%i')
 
         signalTypesSVID = sbf2stf.observedSignalTypes(dataMeasSVID['MEAS_SIGNALTYPE'], verbose)
-        print 'signalTypesSVID = %s' % signalTypesSVID
+        print('signalTypesSVID = %s' % signalTypesSVID)
 
         # print("len dataMeas['MEAS_CODE'] %d" % len(dataMeas['MEAS_CODE']))
         # print("len dataMeasSVID['MEAS_CODE'] %d" % len(dataMeasSVID['MEAS_CODE']))
@@ -136,6 +135,7 @@ if __name__ == "__main__":
         dataMeasSVIDSignalType = []
         lliIndicators = []
         lliTOWs = []
+        firstTOW = []
 
         for index, signalType in enumerate(signalTypesSVID):
             print('-' * 25)
@@ -168,7 +168,30 @@ if __name__ == "__main__":
             print('type lliIndicators[index] = %s' % type(lliIndicators[index]))
             print("lliIndicators[index] = %s (%d)" % (lliIndicators[index], len(lliIndicators[index])))
             lliTOWs.append(dataMeasSVIDSignalType[index][lliIndicators[index]]['MEAS_TOW'])
-            print('lliTOWs = %s (%d)' % (lliTOWs[index], len(lliTOWs[index])))
+            print('lliTOWs[%d] = %s (%d)' % (index, lliTOWs[index], len(lliTOWs[index])))
+
+            # keep track of first observation TOW for this signaltype and SVID
+            firstTOW.append(dataMeasSVIDSignalType[index]['MEAS_TOW'][0])
+            print('firstTOW[%d] = %s' % (index, firstTOW[index]))
+
+        #  combine the TOWs arrays corresponding to
+        # (a) start of obs file on both frequencies
+        # (b) LLI of both frequencies
+        # (c) sort it
+        # to find out how long the Loss of Lock lasts, only if both signaltypes are present!!
+        if np.size(signalTypesSVID) == 2:
+            lliTOWComb = np.unique(np.sort(np.concatenate(([firstTOW[0], firstTOW[1]], lliTOWs[0], lliTOWs[1]), axis=0)))
+            print('lliTOWComb = %s (%d)' % (lliTOWComb, np.size(lliTOWComb)))
+            print('type(lliTOWComb) = %s' % type(lliTOWComb))
+
+            # gather the info about the Loss of Locks for this SVID
+            indexTOWComb = []
+            dataAtLLI = []
+            for index, signalType in enumerate(signalTypesSVID):
+                indexTOWComb.append(np.searchsorted(dataMeasSVIDSignalType[index]['MEAS_TOW'], lliTOWComb))
+                print('indexTOWComb[%d] = %s (%d)' % (index, indexTOWComb[index], np.size(indexTOWComb[index])))
+                dataAtLLI.append(dataMeasSVIDSignalType[index][indexTOWComb[index]])
+                print('dataAtLLI[%d] = %s (%d)' % (index, dataAtLLI[index], np.size(dataAtLLI[index])))
 
         # plot the locktimes for this SVID for all SignalTypes
         plotLockTime.plotLockTime(SVID, signalTypesSVID, dataMeasSVIDSignalType, lliIndicators, lliTOWs, verbose)
@@ -177,5 +200,4 @@ if __name__ == "__main__":
         if verbose:
             plt.show()
 
-
-        sys.exit(-1)
+    sys.exit(99)

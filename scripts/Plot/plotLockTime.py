@@ -21,14 +21,14 @@ def plotLockTime(SVID, signalTypes, dataMeasSVID, lliIndices, lliTOWs, verbose):
     # print('\nplotLockTime' + '-' * 25)
     gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVID)
 
-    for i, signalType in enumerate(signalTypes):
-        print('PLT: signalType[%d] = %s' % (i, signalType))
-        print('PLT: TOW = %s (%d)' % (dataMeasSVID[i]['MEAS_TOW'], len(dataMeasSVID[i]['MEAS_TOW'])))
-        print('PLT: lockTimes = %s (%d)\n' % (dataMeasSVID[i]['MEAS_LOCKTIME'], len(dataMeasSVID[i]['MEAS_LOCKTIME'])))
-        print("PLT: indexLossOfLock[%d] = %s (Nr = %d)" % (i, lliIndices[i], len(lliIndices[i])))
-        # myData2 = dataMeasSVID[i][lliIndices[i]]
-        # print("PLT: myData2 = %s (len = %d)" % (myData2['MEAS_TOW'], len(myData2['MEAS_TOW'])))
-        # print("PLT: idemand = %s (len = %d)\n" % (dataMeasSVID[i][lliIndices[i]]['MEAS_TOW'], len(dataMeasSVID[i][)lliIndices[i]]['MEAS_TOW']))
+    # for i, signalType in enumerate(signalTypes):
+    #     print('PLT: signalType[%d] = %s' % (i, signalType))
+    #     print('PLT: TOW = %s (%d)' % (dataMeasSVID[i]['MEAS_TOW'], len(dataMeasSVID[i]['MEAS_TOW'])))
+    #     print('PLT: lockTimes = %s (%d)\n' % (dataMeasSVID[i]['MEAS_LOCKTIME'], len(dataMeasSVID[i]['MEAS_LOCKTIME'])))
+    #     print("PLT: indexLossOfLock[%d] = %s (Nr = %d)" % (i, lliIndices[i], len(lliIndices[i])))
+    #     # myData2 = dataMeasSVID[i][lliIndices[i]]
+    #     # print("PLT: myData2 = %s (len = %d)" % (myData2['MEAS_TOW'], len(myData2['MEAS_TOW'])))
+    #     # print("PLT: idemand = %s (len = %d)\n" % (dataMeasSVID[i][lliIndices[i]]['MEAS_TOW'], len(dataMeasSVID[i][)lliIndices[i]]['MEAS_TOW']))
 
     # create the plot window
     # plt.style.use('BEGPIOS')
@@ -52,10 +52,11 @@ def plotLockTime(SVID, signalTypes, dataMeasSVID, lliIndices, lliTOWs, verbose):
 
         plt.plot(utc, dataMeasSVID[index]['MEAS_LOCKTIME'], color=sigTypeColor, linestyle='', markersize=0.75, marker='.')
 
+        # add a marker at the LLI
         utc2 = []
         for count2 in range(0, len(dataMeasSVID[index][lliIndices[index]])):
             utc2.append(gpstime.UTCFromWT(float(dataMeasSVID[index][lliIndices[index]]['MEAS_WNC'][count2]), float(dataMeasSVID[index][lliIndices[index]]['MEAS_TOW'][count2])))
-        plt.plot(utc2, dataMeasSVID[index][lliIndices[index]]['MEAS_LOCKTIME'], color=sigTypeColor, linestyle='', markersize=7, marker=mPlt.mFilledMarkers[signalType % len(mPlt.mFilledMarkers)])
+        plt.plot(utc2, dataMeasSVID[index][lliIndices[index]]['MEAS_LOCKTIME'], color=sigTypeColor, linestyle='', markersize=7, markerfacecolor=sigTypeColor, marker=mPlt.mFilledMarkers[signalType % len(mPlt.mFilledMarkers)])
 
         # annotate the plot
         annotateTxt = mSSN.GNSSSignals[signalType]['name'] + str(': %d LLI' % len(lliIndices[index]))

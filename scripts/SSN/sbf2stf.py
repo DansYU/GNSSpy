@@ -505,12 +505,22 @@ def findLossOfLock(measLockTime, verbose=False):
         sys.stdout.write('  Looking for Loss of Lock\n')
 
     # calculate the difference between subsequent lockTimes and find the loss of lock
-    diffLockTime = np.diff(measLockTime)
-    # print('diffLockTime = %s' % diffLockTime)
+    diffLockTime = np.diff(np.int64(measLockTime))
+
+    # # for intermediate results only
+    # print('measLockTime = %s (%d)' % (measLockTime, np.size(measLockTime)))
+    # print('diffLockTime = %s (%d)' % (diffLockTime, np.size(diffLockTime)))
     # print('type diffLockTime = %s' % type(diffLockTime))
+
+    # # for i in range(np.size(diffLockTime)):
+    # #     # if diffLockTime[i] == 0:
+    # #     print('DIFFLOCKTIME[%d] = %s' % (i, diffLockTime[i]))
+
     # indicesLossOfLock = np.where(diffLockTime < 0)
 
-    # print('findLossOfLock = %s' % indicesLossOfLock)
+    # print('indicesLossOfLock = %s' % indicesLossOfLock)
+    # # EOF intermediate results
+
     return np.where(diffLockTime < 0)
 
 

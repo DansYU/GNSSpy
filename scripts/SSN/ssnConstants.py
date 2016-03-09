@@ -57,7 +57,7 @@ colNamesPosGeod = ('GEOD_WNC', 'GEOD_TOW', 'GEOD_MODE', 'GEOD_2D/3D', 'GEOD_Erro
 colFmtPosGeod = 'u2,f8,u1,u1,u1,u1,f8,f8,f8,f8,f8,f8,f8,f8,u2,u2,u2,f4,f4,u1,u1,u4,u1,u1,u1'
 
 # names and format for ChannelStatus
-colNamesChannelStatus = ('CHST_WNC','CHST_TOW','CHST_RxChannel','CHST_SVID','CHST_FreqNr','CHST_HealthStatus','CHST_Azimuth','CHST_Elevation','CHST_RiseSet','CHST_Antenna','CHST_TrackingStatus','CHST_PVTStatus','CHST_PVTInfo')
+colNamesChannelStatus = ('CHST_WNC', 'CHST_TOW', 'CHST_RxChannel', 'CHST_SVID', 'CHST_FreqNr', 'CHST_HealthStatus', 'CHST_Azimuth', 'CHST_Elevation', 'CHST_RiseSet', 'CHST_Antenna', 'CHST_TrackingStatus', 'CHST_PVTStatus', 'CHST_PVTInfo')
 colFmtChannelStatus = 'u2,f8,u1,u1,u1,u2,u2,i1,u1,u1,u2,u2,u2'
 
 

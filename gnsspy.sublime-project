@@ -1,0 +1,69 @@
+{
+	"autoformat_ignore":
+	[
+		"E501",
+		"E801"
+	],
+	"virtualenv": "/home/amuls/virtenvs/GNSSpy",
+	"build_systems":
+	[
+		{
+		 "name": "sbf2SidePeak BEGP1970.15_",
+		 "shell_cmd": "/home/amuls/virtenvs/GNSSpy/bin/python ~/amPython/GNSSpy/scripts/sbf2SidePeak.py  -f BEGP1970.15_ -d /home/amuls/amPython/GNSSpy/SSN/data/15197/ -v"
+		},
+		{
+		 "name": "sbf2CN0 BEGP1970.15_",
+		 "shell_cmd": "/home/amuls/virtenvs/GNSSpy/bin/python ~/amPython/GNSSpy/scripts/sbf2CN0.py  -f BEGP1970.15_ -d /home/amuls/amPython/GNSSpy/SSN/data/15197/ -v"
+		},
+		{
+		 "name": "sbf2DOP BEGP1970.15_",
+		 "shell_cmd": "/home/amuls/virtenvs/GNSSpy/bin/python ~/amPython/GNSSpy/scripts/sbf2DOP.py  -f BEGP1970.15_ -d /home/amuls/amPython/GNSSpy/SSN/data/15197/ -v"
+		},
+		{
+		 "name": "sbf2LockTime BEGP1970.15_",
+		 "shell_cmd": "/home/amuls/virtenvs/GNSSpy/bin/python ~/amPython/GNSSpy/scripts/sbf2LockTime.py -f BEGP1970.15_ -d /home/amuls/amPython/GNSSpy/SSN/data/15197/ --verbose"
+		}
+	],
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"*.pyc"
+			],
+			"folder_exclude_patterns":
+			[
+				"auto",
+				".svn"
+			],
+			"path": "/home/amuls/amPython/GNSSpy/scripts"
+		},
+		{
+			"path": "/home/amuls/amPython/GNSSpy/SSN/scilab"
+		},
+		{
+			"path": "/home/amuls/amPython/GNSSpy/SSN/data"
+		},
+		{
+			"path": "/home/amuls/amPython/GNSSpy/matplotlib"
+		}
+	],
+	"pep8_ignore":
+	[
+		"E501",
+		"W191",
+		"E41",
+		"E231"
+	],
+	"pep8_max_line_length": 180,
+	"settings":
+	{
+		"anaconda_linting": true,
+		"anaconda_linting_behaviour": "always",
+		"pep257": false,
+		"python_interpreter_path": "/usr/bin/env python",
+		"use_pylint": false,
+		"validate_imports": true
+	},
+	"virtualenv": "/home/amuls/virtenvs/GNSSpy"
+}

@@ -20,7 +20,7 @@ E_DOP_INVALID = 10
 E_NRSVS_INVALID = 11
 
 
-def runCmd(cmd, optCmd, verbose):
+def runCmd(cmd, optCmd, verbose=False):
     """
     Run an external command and wait until it finishes (or max time set by TIME2WAIT)
 
@@ -32,7 +32,6 @@ def runCmd(cmd, optCmd, verbose):
         on completion, returns the stdout output of program
         on error, informs the error and exits
     """
-
     # some constants used
     TIME2WAIT = 300
     NROFDOTS = 10
@@ -73,7 +72,7 @@ def runCmd(cmd, optCmd, verbose):
             sys.exit(E_FAILURE)
 
 
-def runSBF2STF(sbfFileName, optSBF2STF, overwrite, verbose):
+def runSBF2STF(sbfFileName, optSBF2STF, overwrite, verbose=False):
     """
     run the sbf2stf conversion and return the files created
 
@@ -84,7 +83,6 @@ def runSBF2STF(sbfFileName, optSBF2STF, overwrite, verbose):
     Returns:
         nameConverted: list of names of output files created
     """
-
     # check whether program SBF2STF is on PATH
     SBF2STF = location.whereis('sbf2stf')                     # convert SBF to ASCII data
     if SBF2STF is None:
@@ -152,7 +150,7 @@ def runSBF2STF(sbfFileName, optSBF2STF, overwrite, verbose):
     return nameConverted
 
 
-def readDOPEpoch(stfMeasEpochFName, verbose):
+def readDOPEpoch(stfMeasEpochFName, verbose=False):
     """
     reads the sbf2stf converted DOP cvs file and stores it into dataMeas numpy darray
 
@@ -170,7 +168,7 @@ def readDOPEpoch(stfMeasEpochFName, verbose):
     return DOPData
 
 
-def readGEODPosEpoch(stfMeasEpochFName, verbose):
+def readGEODPosEpoch(stfMeasEpochFName, verbose=False):
     """
     reads the sbf2stf converted Geodetic_2 cvs file and stores it into dataMeas numpy darray
 
@@ -190,7 +188,7 @@ def readGEODPosEpoch(stfMeasEpochFName, verbose):
     return GEODPosData
 
 
-def readMeasEpoch(stfMeasEpochFName, verbose):
+def readMeasEpoch(stfMeasEpochFName, verbose=False):
     """
     reads the sbf2stf converted MeasEpoch cvs file and stores it into dataMeas numpy darray
 
@@ -212,7 +210,7 @@ def readMeasEpoch(stfMeasEpochFName, verbose):
     return dataMeasSorted
 
 
-def readMeasExtra(stfMeasExtraName, verbose):
+def readMeasExtra(stfMeasExtraName, verbose=False):
     """
     reads the sbf2stf converted MeasExtra cvs file and stores it into dataMeas numpy darray
 
@@ -236,7 +234,7 @@ def readMeasExtra(stfMeasExtraName, verbose):
     return dataExtraSorted
 
 
-def readSatVisibility(stfSatVisibilityName, verbose):
+def readSatVisibility(stfSatVisibilityName, verbose=False):
     """
     reads the sbf2stf converted SatVisibility cvs file and stores it into dataVisibility numpy darray
 
@@ -246,7 +244,6 @@ def readSatVisibility(stfSatVisibilityName, verbose):
     Returns:
         dataVisibility: contains the dataVisibility after sorting for Wnc and TOW
     """
-
     if verbose:
         sys.stdout.write('    Reading and sorting SatVisibility_1 data\n')
 
@@ -261,7 +258,7 @@ def readSatVisibility(stfSatVisibilityName, verbose):
 
 def readJammingFile(JamFileName):
     """
-    reads the jamming text tab delimited file and stores it into a numpy darray
+    reads the jamming text comma delimited file and stores it into a numpy darray
 
     Parameters:
         JamFileName: name of file
@@ -269,13 +266,12 @@ def readJammingFile(JamFileName):
     Returns:
         dataJamming: contains the Jamming values, start and end time.
     """
-
     dataJamming = np.genfromtxt(JamFileName, delimiter=",", skip_header=1, dtype=mSSN.colFmtJammingFile, names=mSSN.colNamesJammingFile)
 
     return dataJamming
 
 
-def readChannelStatus(stfChannelStatusName, verbose):
+def readChannelStatus(stfChannelStatusName, verbose=False):
     """
     reads the sbf2stf converted CHannelStatus cvs file and stores it into numpy darray
 
@@ -310,7 +306,7 @@ def removeSmoothing(code, smoothingCorr, mpCorr):
     return rawPR
 
 
-def verifySignalTypeOrder(measSignalType, extraSignalType, measTOW, verbose):
+def verifySignalTypeOrder(measSignalType, extraSignalType, measTOW, verbose=False):
     """
     Basic check on the signaltypes whether they are aligned after sorting dataMeas and dataExtra
 
@@ -341,7 +337,7 @@ def verifySignalTypeOrder(measSignalType, extraSignalType, measTOW, verbose):
         return False
 
 
-def observedSatellites(colSVIDs, verbose):
+def observedSatellites(colSVIDs, verbose=False):
     """
     Creates an index of observed satellites
 
@@ -367,7 +363,7 @@ def observedSatellites(colSVIDs, verbose):
     return listSVIDs
 
 
-def observedSignalTypes(measSignalTypes, verbose):
+def observedSignalTypes(measSignalTypes, verbose=False):
     """
     Creates an index of signal types
 
@@ -433,22 +429,22 @@ def indicesSignalType(signalType, measSignalType, verbose=False):
     return np.where(measSignalType == signalType)
 
 
-def findValidElevation(elevData, verbose):
-    '''
+def findValidElevation(elevData, verbose=False):
+    """
     findValidElevation searches for valid values for elevation angle
     Parameters:
         elevData columns with logged elevation data
     returns:
         indices which indicate valid elevation data
-    '''
+    """
     if verbose:
         sys.stdout.write('    Extracting valid elevation data\n')
 
     return np.where(elevData != -1)
 
 
-def findValidDOP(pdopData, verbose):
-    '''
+def findValidDOP(pdopData, verbose=False):
+    """
     findValidDOP seraches for the valid values for PDOP
 
     Parameters:
@@ -456,7 +452,7 @@ def findValidDOP(pdopData, verbose):
 
     Returns:
         indices which indicate valid DOP data
-    '''
+    """
     if verbose:
         sys.stdout.write('    Extracting valid PDOP data\n')
 
@@ -471,8 +467,8 @@ def findValidDOP(pdopData, verbose):
     return validDOPIndices
 
 
-def findNrSVs(nrSVsData, verbose):
-    '''
+def findNrSVs(nrSVsData, verbose=False):
+    """
     findNrSVs searches for nrSVs > 0
 
     Parameters:
@@ -480,7 +476,7 @@ def findNrSVs(nrSVsData, verbose):
 
     Returns:
         indices which indicate positive nr of SVs
-    '''
+    """
     if verbose:
         sys.stdout.write('      Extracting number of observed satellites.\n')
 
@@ -495,7 +491,7 @@ def findNrSVs(nrSVsData, verbose):
     return validNrSVsIndices
 
 
-def findLossOfLock(measLockTime, verbose):
+def findLossOfLock(measLockTime, verbose=False):
     """
     returns the indices where a loss of lock occured
 
@@ -509,17 +505,29 @@ def findLossOfLock(measLockTime, verbose):
         sys.stdout.write('  Looking for Loss of Lock\n')
 
     # calculate the difference between subsequent lockTimes and find the loss of lock
-    diffLockTime = np.diff(measLockTime)
-    # print('diffLockTime = %s' % diffLockTime)
+    diffLockTime = np.diff(np.int64(measLockTime))
+
+    # # for intermediate results only
+    # print('measLockTime = %s (%d)' % (measLockTime, np.size(measLockTime)))
+    # print('diffLockTime = %s (%d)' % (diffLockTime, np.size(diffLockTime)))
     # print('type diffLockTime = %s' % type(diffLockTime))
+
+    # # for i in range(np.size(diffLockTime)):
+    # #     # if diffLockTime[i] == 0:
+    # #     print('DIFFLOCKTIME[%d] = %s' % (i, diffLockTime[i]))
+
     # indicesLossOfLock = np.where(diffLockTime < 0)
 
-    # print('findLossOfLock = %s' % indicesLossOfLock)
+    # print('indicesLossOfLock = %s' % indicesLossOfLock)
+    # # EOF intermediate results
+
     return np.where(diffLockTime < 0)
 
 
 def findNanValues(data):
-
+    """
+    findNanValues looks where the data is NaN
+    """
     # if verbose:
     #     sys.stdout.write('  Looking for NaN index\n')
     print('data = %s (#%d)' % (data, len(data)))
@@ -527,8 +535,8 @@ def findNanValues(data):
     return np.where(~np.isnan(data))
 
 
-def findSidePeaks(SVID, signalTypes, dataMeasSVID, verbose):
-    '''
+def findSidePeaks(SVID, signalTypes, dataMeasSVID, verbose=False):
+    """
     findSidePeaks finds the side peak correlation by differencing the code measurements on E1A and E6
     Parameters:
         SVID: identifies the satellite
@@ -540,7 +548,7 @@ def findSidePeaks(SVID, signalTypes, dataMeasSVID, verbose):
         sidePeakIndex: the index at which a jump in dPR is detected (exluding the first value)
         jumpDPR: the difference between dPR at detected side peak and its previous value (thus jump in dPR detected)
         jumpDPRNear97Indices: indices in jumpDPR identifying the elements nearest to 9.7 integer multiple
-    '''
+    """
     print('-' * 50)
     if verbose:
         sys.stdout.write('  Looking for Side Peaks\n')

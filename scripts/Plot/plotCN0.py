@@ -13,7 +13,7 @@ from GNSS import gpstime
 
 
 def suplabel(axis, label, label_prop=None, labelpad=3, ha='center', va='center'):
-    '''
+    """
     Add super ylabel or xlabel to the figure
     Similar to matplotlib.suptitle
         axis       - string: "x" or "y"
@@ -22,7 +22,7 @@ def suplabel(axis, label, label_prop=None, labelpad=3, ha='center', va='center')
         labelpad   - padding from the axis (default: 5)
         ha         - horizontal alignment (default: "center")
         va         - vertical alignment (default: "center")
-    '''
+    """
     fig = pylab.gcf()
     xmin = []
     ymin = []
@@ -50,7 +50,7 @@ def suplabel(axis, label, label_prop=None, labelpad=3, ha='center', va='center')
 
 
 def TOW2UTC(WkNr, TOW):
-    '''
+    """
     TOW2UTC transforms an list expressed in TOW to UTC list
 
     Parameters:
@@ -59,7 +59,7 @@ def TOW2UTC(WkNr, TOW):
 
     Return:
         UTC: list of UTCs
-    '''
+    """
     # transform TOW to UTC representation
     UTC = []
     for i in range(0, len(TOW)):
@@ -70,7 +70,7 @@ def TOW2UTC(WkNr, TOW):
 
 
 def plotCN0(k, firstSV, listSVIDs, listST, spanElevation, spanUTC, spanJammingStart, spanJammingEnd, CN0meas, dataVisibilitySVprn, dataJammingValues, dateStr, verbose=False):
-    '''
+    """
     plotCN0 plots the CN0 values for SVs per signalType observed
     Parameters:
         k is the coresponding satellite from the Visibility block
@@ -79,7 +79,7 @@ def plotCN0(k, firstSV, listSVIDs, listST, spanElevation, spanUTC, spanJammingSt
         spanTElevation is the GPS time representation of satellites from Elevation file
         spanUTC is the UTC representation of spanElevation
         CN0meas contains observed CN0 for all SVs and all signalTypes
-    '''
+    """
     # plt.style.use('ggplot')
     # plt.style.use('BEGPIOS')
 
@@ -97,7 +97,7 @@ def plotCN0(k, firstSV, listSVIDs, listST, spanElevation, spanUTC, spanJammingSt
             ax.set_color_cycle(['purple', 'black', 'green', 'cyan', 'violet'])
             # create label for identify SV and plot its CN0 value for this signalType
             satLabel = []
-            colors = iter(cm.rainbow(np.linspace(0, 1, len(listSVIDs))))
+            # colors = iter(cm.rainbow(np.linspace(0, 1, len(listSVIDs))))
             for j, STj in enumerate(listST):
                 if STj == uniqSTi:
                     satLabel.append(mSSN.svPRN(listSVIDs[j])[1] + str(mSSN.svPRN(listSVIDs[j])[2]))
@@ -233,7 +233,7 @@ def plotCN0(k, firstSV, listSVIDs, listST, spanElevation, spanUTC, spanJammingSt
                     print('mSSN.GNSSSignals[listST[%d]][name] = %s' % (j, mSSN.GNSSSignals[listST[j]]['name']))
                     print('spanUTC = %s  ==>  %s' % (spanUTC[0], spanUTC[-1]))
                     # plotting CNO
-                    ax.plot(spanUTC, CN0meas[j], linestyle='-',linewidth=0.5, alpha=1, label=stLabel[-1])
+                    ax.plot(spanUTC, CN0meas[j], linestyle='-', linewidth=0.5, alpha=1, label=stLabel[-1])
                     ax.set_ylim(20, 60)
                     # plot annotation for CN0
                     gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVj)

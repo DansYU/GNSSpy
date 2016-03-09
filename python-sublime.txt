@@ -1,0 +1,15 @@
+{
+ "folders":
+ [
+  {
+   "path": "."
+  }
+ ],
+ "virtualenv": "/Users/ed/.virtualenvs/curio",
+ "build_systems": [
+  {
+   "name": "Test",
+   "shell_cmd": "/Users/ed/.virtualenvs/curio/bin/python setup.py test"
+  }
+ ] 
+}

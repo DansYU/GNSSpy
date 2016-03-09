@@ -4,13 +4,14 @@ import sys
 import os
 import numpy as np
 import argparse
-import matplotlib.pyplot as plt
-import time
+# import matplotlib.pyplot as plt
+# import time
 
 from SSN import sbf2stf
 from Plot import plotCN0
 from GNSS import gpstime
-from datetime import date
+# from datetime import date
+
 __author__ = 'amuls'
 
 
@@ -43,10 +44,10 @@ def treatCmdOpts(argv):
 
     # create the parser for command line arguments
     parser = argparse.ArgumentParser(description=helpTxt)
-    parser.add_argument('-f','--file', help='Name of SBF file', required=True)
+    parser.add_argument('-f', '--file', help='Name of SBF file', required=True)
     parser.add_argument('-d', '--dir', help='Directory of SBF file (defaults to .)', required=False, default='.')
-    parser.add_argument('-o','--overwrite', help='overwrite intermediate files (default False)', action='store_true', required=False)
-    parser.add_argument('-j','--jamming', help='setting the config file for jamming periods', required=False, default='.')
+    parser.add_argument('-o', '--overwrite', help='overwrite intermediate files (default False)', action='store_true', required=False)
+    parser.add_argument('-j', '--jamming', help='setting the config file for jamming periods', required=False, default='.')
     parser.add_argument('-v', '--verbose', help='displays interactive graphs and increase output verbosity (default False)', action='store_true', required=False)
     args = parser.parse_args()
 
@@ -60,13 +61,13 @@ def treatCmdOpts(argv):
 
 
 def createFullTimeSpan(towMeas):
-    '''
+    """
     createFullTimeSpan creates an array of TOW and UTC that covers the full observation period for all detected satellites
     Parameters:
         towMeas: TOWs of all observed measurements
     Returns:
         spanTOW, spanUTC: values that span the observation period
-    '''
+    """
     TOWMax = -1
     TOWMin = gpstime.secsInWeek + 1
 
@@ -84,7 +85,7 @@ def createFullTimeSpan(towMeas):
 
 
 def extractTOWandCN0(SVprn, measData, TOWmeas, CN0meas, verbose=False):
-    '''
+    """
     extractTOWandCN0 axtracts for a SV the TOW and CN0 values observed per signaltype
     Parameters:
         SVprn: the ID for this SV
@@ -93,7 +94,7 @@ def extractTOWandCN0(SVprn, measData, TOWmeas, CN0meas, verbose=False):
         CN0meas: idem for CN0
     Returns:
         the signal types for this SVprn
-    '''
+    """
     if verbose:
         print('  Processing SVID = %d' % SVprn)
 
@@ -127,14 +128,14 @@ def extractTOWandCN0(SVprn, measData, TOWmeas, CN0meas, verbose=False):
 
 
 def extractELEVATION(SVprn, dataVisibility, TOWmeas, verbose=False):
-    '''
+    """
     extractELEVATION Extracts for a SV the elevation values observed
     Parameters:
         SVprn: the ID for this SV
         dataVisibility: the measurement data from SatVisibility_1
     Returns:
         the elevation for this SVprn
-    '''
+    """
     indexSVprnVis = sbf2stf.indicesSatellite(SVprn, dataVisibility['VISIBILITY_SVID'], verbose)
     dataVisibilitySVprn = dataVisibility[indexSVprnVis]['VISIBILITY_ELEVATION']
     TOWmeas = dataVisibility[indexSVprnVis]['VISIBILITY_TOW']
@@ -146,7 +147,7 @@ def extractELEVATION(SVprn, dataVisibility, TOWmeas, verbose=False):
 
 
 def fillDataGaps(spanTOW, TOW, CN0):
-    '''
+    """
     fillDataGaps fills in the datagaps in the CN0 data to match the whole observation time span for simultaneously plotting the CN0 of all SVs for 1 signaltype
     Parameters:
         spanTOW = full span of the observation period
@@ -154,7 +155,7 @@ def fillDataGaps(spanTOW, TOW, CN0):
         CN0 = observed value
     Returns:
         spanCN0 contains the CN0 values but with NaN on TOWs where no data is available
-    '''
+    """
     # search for the indices that match between spanTOW and TOW
     matchIndices = np.searchsorted(spanTOW, TOW)
     print('matchIndices = %s (%d)' % (matchIndices, len(matchIndices)))

@@ -164,7 +164,7 @@ def plotCN0(k, firstSV, listSVIDs, listST, spanElevation, spanUTC, spanJammingSt
                     stLabel.append(mSSN.GNSSSignals[listST[j]]['name'])
                     print('mSSN.GNSSSignals[listST[%d]][name] = %s' % (j, mSSN.GNSSSignals[listST[j]]['name']))
                     print('spanUTC = %s  ==>  %s' % (spanUTC[0], spanUTC[-1]))
-                    plt.plot(spanUTC, CN0meas[j],linestyle='-', color=next(colors), linewidth=0.25, alpha=0.75, label=stLabel[-1])
+                    plt.plot(spanUTC, CN0meas[j], linestyle='-', color=next(colors), linewidth=0.25, alpha=0.75, label=stLabel[-1])
 
                     # plot annotation
                     gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVj)

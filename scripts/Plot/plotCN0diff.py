@@ -12,43 +12,6 @@ from GNSS import gpstime
 # import ggplot2
 
 
-def suplabel(axis, label, label_prop=None, labelpad=3, ha='center', va='center'):
-    '''
-    Add super ylabel or xlabel to the figure
-    Similar to matplotlib.suptitle
-        axis       - string: "x" or "y"
-        label      - string
-        label_prop - keyword dictionary for Text
-        labelpad   - padding from the axis (default: 5)
-        ha         - horizontal alignment (default: "center")
-        va         - vertical alignment (default: "center")
-    '''
-    fig = pylab.gcf()
-    xmin = []
-    ymin = []
-    for ax in fig.axes:
-        xmin.append(ax.get_position().xmin)
-        ymin.append(ax.get_position().ymin)
-    xmin, ymin = min(xmin), min(ymin)
-    dpi = fig.dpi
-    if axis.lower() == "y":
-        rotation = 90.
-        x = xmin-float(labelpad)/dpi
-        y = 0.5
-    elif axis.lower() == 'x':
-        rotation = 0.
-        x = 0.5
-        y = ymin - float(labelpad)/dpi
-    else:
-        raise Exception("Unexpected axis: x or y")
-    if label_prop is None:
-        label_prop = dict()
-    pylab.text(x, y, label, rotation=rotation,
-               transform=fig.transFigure,
-               ha=ha, va=va,
-               **label_prop)
-
-
 def TOW2UTC(WkNr, TOW):
     '''
     TOW2UTC transforms an list expressed in TOW to UTC list
@@ -69,77 +32,75 @@ def TOW2UTC(WkNr, TOW):
     return UTC
 
 
-def plotCN0diff(listSVIDs, listST, spanUTC, CN0meas, dateStr, verbose=False):
+def plotCN0diff(listSVIDs, listST, spanUTC, CN0measdiff, dateStr, verbose=False):
     '''
     plotCN0 plots the CN0 values for SVs per signalType observed
     Parameters:
         listSVIDs is list of SVIDs we have data for
         listST is list of signaltypes
         spanUTC is the UTC representation of spanElevation
-        CN0meas contains observed CN0 for all SVs and all signalTypes
+        CN0measdiff contains observed CN0 variation for all SVs and all signalTypes
+        dateStr is the respective day of observations
     '''
-    # plt.style.use('ggplot')
-    # plt.style.use('BEGPIOS')
 
-    # first plot all SVs per signalType
     # get unique list of signaltypes to determine the number of plots we have to make
-    uniqSTs = list(set(listST))
-    # print('uniqSTs = %s' % uniqSTs)
+    uniqSVs = list(set(listSVIDs))
+    for i, uniqSVi in enumerate(uniqSVs):
+            plt.figure(i)
+            ax = plt.gca()
 
-    # loop over the signalTypes
-    for i, uniqSTi in enumerate(uniqSTs):
-        plt.figure(i)
-        ax = plt.gca()
-        ax.set_color_cycle(['purple', 'black', 'green', 'cyan', 'violet'])
-        # create label for identify SV and plot its CN0 variation for this signalType
-        satLabel = []
-        for j, STj in enumerate(listST):
-            if STj == uniqSTi:
-                satLabel.append(mSSN.svPRN(listSVIDs[j])[1] + str(mSSN.svPRN(listSVIDs[j])[2]))
-                plt.plot(spanUTC, CN0meas[j], linestyle='-', linewidth=0.5, alpha=0.75, label=satLabel[-1])
-                ax.set_ylim(-10, 10)
-        print('i = %d  len = %d' % (i, np.size(uniqSTs)))
+            # create label for signalType and plot its SN0 for this uniqSVi
+            stLabel = []
+            ax.set_color_cycle(['purple', 'black', 'green', 'cyan', 'violet'])
 
-        # plot annotation
-        plt.title('Signaltype: %s' % mSSN.GNSSSignals[uniqSTi]['name'], fontsize='x-large')
-        plt.xlabel('Time of ' + dateStr)
-        plt.ylabel('C/N0 diff')
-        # adjust the X-axis to represent readable time
-        ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M:%S'))
-        plt.xlim(spanUTC[0], spanUTC[-1])
-        # annotate for copyright
-        plt.text(0, -0.125, r'$\copyright$ Alain Muls (alain.muls@rma.ac.be)', horizontalalignment='left', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
-        # Shrink current axis's height by x% on the bottom
-        box = ax.get_position()
-        # print('box.x0     = %f' % box.x0)
-        # print('box.y0     = %f' % box.y0)
-        # print('box.width  = %f' % box.width)
-        # print('box.height = %f' % box.height)
+            for j, SVj in enumerate(listSVIDs):
+                if SVj == uniqSVi:
+                    stLabel.append(mSSN.GNSSSignals[listST[j]]['name'])
+                    print('mSSN.GNSSSignals[listST[%d]][name] = %s' % (j, mSSN.GNSSSignals[listST[j]]['name']))
+                    print('spanUTC = %s  ==>  %s' % (spanUTC[0], spanUTC[-1]))
+                    print(len(spanUTC), len(CN0measdiff[j]))
+                    plt.plot(spanUTC, CN0measdiff[j], linestyle='-', linewidth=0.25, alpha=0.75, label=stLabel[-1])
+                    ax.set_ylim(-3, 3)
+                    # plot annotation
+                    gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVj)
+                    textSVID = gnssSystShort + str(gnssPRN)
+                    print('j = %d - SV = %s,  uniqSVi = %s\n' % (i, textSVID, uniqSVi))
 
-        # ax = plt.subplot(111)
-        ax.set_position([box.x0, box.y0 + box.height * 0.3,
-                         box.width, box.height * 0.7])
-        box = ax.get_position()
-        # print('after\nbox.x0     = %f' % box.x0)
-        # print('box.y0     = %f' % box.y0)
-        # print('box.width  = %f' % box.width)
-        # print('box.height = %f' % box.height)
+                    plt.title('Satellite: %s' % textSVID)
+                    plt.xlabel('Time of ' + dateStr)
+                    plt.ylabel('C/N0 variation')
 
-        # plot legend
-        plt.legend(bbox_to_anchor=(box.x0 + box.width*0.2, -0.15, box.width*0.6, 0.15), loc='lower center', ncol=np.size(satLabel), fontsize='xx-small')
-        llines = plt.gca().get_legend().get_lines()  # all the lines.Line2D instance in the legend
-        plt.setp(llines, linewidth=4)      # the legend linewidth
-        # ggplot2.rstyle(ax)
+            # adjust the X-axis to represent readable time
+            ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M:%S'))
+            plt.xlim(spanUTC[0], spanUTC[-1])
 
-        fig = plt.gcf()
-        if verbose:
-            print('\nfigname = %s -- %s' % (STj, mSSN.GNSSSignals[uniqSTi]['name']))
-        fig.savefig('%s-CN0.png' % (mSSN.GNSSSignals[uniqSTi]['name']), dpi=fig.dpi)
+            # annotate for copyright
+            plt.text(0, -0.125, r'$\copyright$ Alain Muls (alain.muls@rma.ac.be)', horizontalalignment='left', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
+            plt.text(1, -0.125, r'$\copyright$ Andrei Alexandru (andrei.alex.toma@gmail.com)', horizontalalignment='right', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
 
-        if i != len(uniqSTs) - 1:
-            if verbose:
-                plt.show(block=False)
-        else:
-            if verbose:
-                plt.show()
-    plt.close()
+            # Shrink current axis's height by x% on the bottom
+            box = ax.get_position()
+            ax.set_position([box.x0, box.y0 + box.height * 0.4,
+                             box.width, box.height * 0.6])
+            box = ax.get_position()
+
+            plt.legend(bbox_to_anchor=(box.x0 + box.width*0.2, -0.15, box.width*0.6, 0.15), loc='lower center', ncol=np.size(stLabel), fontsize='xx-small')
+            llines = plt.gca().get_legend().get_lines()  # all the lines.Line2D instance in the legend
+            plt.setp(llines, linewidth=4)      # the legend linewidth
+            plt.tight_layout(rect=(0, 0, 1, 1))
+
+            # Shrink current axis's height by 10% on the bottom
+            box = ax.get_position()
+            ax = plt.subplot(111)
+            ax.set_position([box.x0, box.y0 + box.height * 0.1,
+                             box.width, box.height * 0.9])
+            fig = plt.gcf()
+            fig.savefig('%s-%s%d-CN0.png' % (gnssSyst, gnssSystShort, gnssPRN), dpi=fig.dpi)
+            if i != len(uniqSVs)-1:
+                if verbose:
+                    plt.show(block=False)
+            else:
+                if verbose:
+                    plt.show()
+            # close the figure
+            plt.close()

@@ -317,5 +317,4 @@ if __name__ == "__main__":
             ELEVATIONTowUTC = plotCN0.TOW2UTC(1873, ELEVATIONTow)
             plotCN0.plotCN0(i, fSV, SVIDlist, STlist, ELEVATIONTowUTC, UTCspan, JammingStartTime, JammingEndTime, measCN0span, ELEVATIONVisibility, JammingValues, dateString, verbose)
     # create the plots for each signaltype
-    sys.exit(0)
     sys.exit(E_SUCCESS)

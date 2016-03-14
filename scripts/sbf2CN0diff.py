@@ -4,14 +4,12 @@ import sys
 import os
 import numpy as np
 import argparse
-import matplotlib.pyplot as plt
-import time
 
 from SSN import sbf2stf
 from Plot import plotCN0diff
 from GNSS import gpstime
-from datetime import date
-__author__ = 'amuls'
+from SSN import ssnConstants as mSSN
+__author__ = 'AAlex'
 
 
 # exit codes
@@ -82,8 +80,8 @@ def createFullTimeSpan(towMeas):
     return spanTOW, spanUTC
 
 
-def extractTOWandCN0(SVprn, measData, TOWmeas, CN0diff, verbose=False):
-    '''
+def extractTOWandCN0(SVprn, measData, TOWmeas, CN0meas, verbose=False):
+    """
     extractTOWandCN0 axtracts for a SV the TOW and CN0 values observed per signaltype
     Parameters:
         SVprn: the ID for this SV
@@ -92,7 +90,7 @@ def extractTOWandCN0(SVprn, measData, TOWmeas, CN0diff, verbose=False):
         CN0meas: idem for CN0
     Returns:
         the signal types for this SVprn
-    '''
+    """
     if verbose:
         print('  Processing SVID = %d' % SVprn)
 
@@ -107,7 +105,6 @@ def extractTOWandCN0(SVprn, measData, TOWmeas, CN0diff, verbose=False):
     signalTypesSVprn = sbf2stf.observedSignalTypes(dataMeasSVprn['MEAS_SIGNALTYPE'], verbose)
 
     indexSignalType = []
-    diff = []
 
     for index, signalType in enumerate(signalTypesSVprn):
         if verbose:
@@ -116,13 +113,13 @@ def extractTOWandCN0(SVprn, measData, TOWmeas, CN0diff, verbose=False):
         # get the observation time span and observed CN0 for this SVprn and SignalType
         indexSignalType.extend(np.array(sbf2stf.indicesSignalType(signalType, dataMeasSVprn['MEAS_SIGNALTYPE'], verbose)))
         TOWmeas.append(dataMeasSVprn[indexSignalType[index]]['MEAS_TOW'])
-        t = dataMeasSVprn[indexSignalType[index]]['MEAS_CN0']
-        for i in range(len(t) - 1):
-            diff.append([t[i + 1] - t[i]])
-        print(len(diff))
-        CN0diff.append(diff)
-        print(len(CN0diff), 'ASDA')
-    sys.exit(0)
+        CN0meas.append(dataMeasSVprn[indexSignalType[index]]['MEAS_CN0'])
+
+        # # print last added values
+        if True:
+            print('TOWmeas[%d] = %d => %d (%d)' % (len(TOWmeas), TOWmeas[-1][0], TOWmeas[-1][-1], np.size(TOWmeas[-1])))
+            print('CN0meas[%d] = %f => %s (%d)' % (len(CN0meas), CN0meas[-1][0], CN0meas[-1][-1], np.size(CN0meas[-1])))
+
     return signalTypesSVprn
 
 
@@ -179,9 +176,21 @@ if __name__ == "__main__":
         sys.exit(E_FILE_NOT_EXIST)
 
     # execute the conversion sbf2stf needed
-    SBF2STFOPTS = ['MeasEpoch_2', 'MeasExtra_1', 'SatVisibility_1']     # options for conversion, ORDER IMPORTANT!!
+    SBF2STFOPTS = ['MeasEpoch_2', 'MeasExtra_1']     # options for conversion, ORDER IMPORTANT!!
     sbf2stfConverted = sbf2stf.runSBF2STF(nameSBF, SBF2STFOPTS, overwrite, verbose)
-    # print('SBF2STFOPTS = %s' % SBF2STFOPTS)
+    print('SBF2STFOPTS = %s' % SBF2STFOPTS)
+
+    # check the blocks for errors like 1.INF
+    for i in sbf2stfConverted:
+        f = open(i, 'r')
+        filedata = f.read()
+        f.close()
+        newdata = filedata.replace('1.#INF', '').replace('-1.#IND', '')
+        f = open(i, 'w')
+        f.write(newdata)
+        f.close()
+
+    # extracts data in numpy array
     for option in SBF2STFOPTS:
         # print('option = %s - %d' % (option, SBF2STFOPTS.index(option)))
         if option == 'MeasEpoch_2':
@@ -190,9 +199,6 @@ if __name__ == "__main__":
         elif option == 'MeasExtra_1':
             # read the MeasExtra data into numpy array
             dataExtra = sbf2stf.readMeasExtra(sbf2stfConverted[SBF2STFOPTS.index(option)], verbose)
-        elif option == 'SatVisibility_1':
-            #  read the SatVisibility data into a numpy array
-            dataVisibility = sbf2stf.readSatVisibility(sbf2stfConverted[SBF2STFOPTS.index(option)], verbose)
         else:
             print('  wrong option %s given.' % option)
             sys.exit(E_WRONG_OPTION)
@@ -213,22 +219,13 @@ if __name__ == "__main__":
 
     # find list of SVIDs from MeasEpoch and SatVisibility blocks and SignalTypes observed
     SVIDs = sbf2stf.observedSatellites(dataMeas['MEAS_SVID'], verbose)
-    SVIDsVis = sbf2stf.observedSatellites(dataVisibility['VISIBILITY_SVID'], verbose)
-    # print(SVIDsVis)
-    # print(SVIDs)
-    # sys.exit(0)
     signalTypes = sbf2stf.observedSignalTypes(dataMeas['MEAS_SIGNALTYPE'], verbose)
-    indexSVprnVis = sbf2stf.indicesSatellite(dataVisibility['VISIBILITY_SVID'], verbose)
-    # print(SVIDsVis)
-
-    # create the CN0 plots for all SVs and SignalTypes
-    indexSignalType = []
-    dataMeasSignalType = []
 
     # storing data in arrays per SV and per signalType
+    indexSignalType = []
+    dataMeasSignalType = []
     measTOW = []  # TOWs with measurements
-    visibilityTOW = []
-    measCN0 = []  # CNO values @ measTOW
+    measCN0 = []  # CNO diff @ measTOW
     STlist = []  # list of signaltypes traversed
     SVIDlist = []  # list of SVIDs traversed
     ELEVATIONVisibility = []  # list of Elevation  traversed
@@ -239,7 +236,6 @@ if __name__ == "__main__":
         for i, signalType in enumerate(signalTypesSVID):
             STlist.append(signalType)
             SVIDlist.append(SVID)
-    # for SVID in SVIDsVis:
 
     # create the TOW array covering the whole tie range
     TOWspan, UTCspan = createFullTimeSpan(measTOW)
@@ -249,7 +245,6 @@ if __name__ == "__main__":
     # for all the CN0 data per Signaltype and SVID => add NaN for missing data
     # for index, signalType in enumerate(signalTypesSVID):
     print('\nmeasTOW = %d - %d - %d' % (len(measTOW), len(measTOW[0]), len(measTOW[-1])))
-
     for i, measTOWi in enumerate(measTOW):
         print('measTOW[%d] = %f - %f' % (i, measTOWi[0], measTOWi[-1]))
     for i, measCN0i in enumerate(measCN0):
@@ -260,17 +255,24 @@ if __name__ == "__main__":
 
     # adjust the measCNO arrays to fill with NaN as to fit the TOWall array for plotting
     measCN0span = []
-    measCN0diff = []
-
     for i in range(len(measCN0)):
         measCN0span.append(fillDataGaps(TOWspan, measTOW[i], measCN0[i]))
 
     for i in range(len(measCN0)):
         print('measCN0span[%d] = %s (%d)' % (i, measCN0span[i], len(measCN0span[i])))
-    # creates the lists of elevation and the coresponding Tow
+
+    # creates the lists of CN0 diff
+    measCN0diff = []
     for i in range(len(measCN0span)):
-        measCN0diff.append(measCN0span[i] - measCN0span[i - 1])
-    print(measCN0)
-    plotCN0diff.plotCN0diff(SVIDlist, STlist, UTCspan, measCN0diff, dateString, verbose)
+        measCN0diff.append(np.diff(measCN0span[i]))
+
+    # adjust the length of time span to fit the CN0 diff
+    UTCspan.remove(UTCspan[0])
     # create the plots for each signaltype
+    plotCN0diff.plotCN0diff(SVIDlist, STlist, UTCspan, measCN0diff, dateString, verbose)
+
+    # determine the maximum difference of CN0
+    for i in range(len(measCN0diff)):
+        gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVIDlist[i])
+        print('Satellite %d signaltype %s has %s maximum variation' % (gnssPRN, mSSN.GNSSSignals[STlist[i]]['name'], np.nanmax(abs(measCN0diff[i]))))
     sys.exit(E_SUCCESS)

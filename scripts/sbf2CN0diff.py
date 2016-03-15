@@ -151,6 +151,24 @@ def fillDataGaps(spanTOW, TOW, CN0):
     return spanCN0
 
 
+def extractELEVATION(SVprn, dataVisibility, verbose=False):
+    """
+    extractELEVATION Extracts for a SV the elevation values observed
+    Parameters:
+        SVprn: the ID for this SV
+        dataVisibility: the measurement data from SatVisibility_1
+    Returns:
+        the elevation for this SVprn
+    """
+    indexSVprnVis = sbf2stf.indicesSatellite(SVprn, dataVisibility['VISIBILITY_SVID'], verbose)
+    dataVisibilitySVprn = dataVisibility[indexSVprnVis]['VISIBILITY_ELEVATION']
+    # print(SVprn)
+    # print(dataVisibilitySVprn)
+    # sys.exit(0)
+
+    return dataVisibilitySVprn
+
+
 if __name__ == "__main__":
     # treat command line options
     nameSBF, dirSBF, overwrite, verbose = treatCmdOpts(sys.argv)
@@ -176,7 +194,7 @@ if __name__ == "__main__":
         sys.exit(E_FILE_NOT_EXIST)
 
     # execute the conversion sbf2stf needed
-    SBF2STFOPTS = ['MeasEpoch_2', 'MeasExtra_1']     # options for conversion, ORDER IMPORTANT!!
+    SBF2STFOPTS = ['MeasEpoch_2', 'MeasExtra_1', 'SatVisibility_1']     # options for conversion, ORDER IMPORTANT!!
     sbf2stfConverted = sbf2stf.runSBF2STF(nameSBF, SBF2STFOPTS, overwrite, verbose)
     print('SBF2STFOPTS = %s' % SBF2STFOPTS)
 
@@ -199,6 +217,9 @@ if __name__ == "__main__":
         elif option == 'MeasExtra_1':
             # read the MeasExtra data into numpy array
             dataExtra = sbf2stf.readMeasExtra(sbf2stfConverted[SBF2STFOPTS.index(option)], verbose)
+        elif option == 'SatVisibility_1':
+            #  read the SatVisibility data into a numpy array
+            dataVisibility = sbf2stf.readSatVisibility(sbf2stfConverted[SBF2STFOPTS.index(option)], verbose)
         else:
             print('  wrong option %s given.' % option)
             sys.exit(E_WRONG_OPTION)
@@ -219,15 +240,19 @@ if __name__ == "__main__":
 
     # find list of SVIDs from MeasEpoch and SatVisibility blocks and SignalTypes observed
     SVIDs = sbf2stf.observedSatellites(dataMeas['MEAS_SVID'], verbose)
+    SVIDsVis = sbf2stf.observedSatellites(dataVisibility['VISIBILITY_SVID'], verbose)
     signalTypes = sbf2stf.observedSignalTypes(dataMeas['MEAS_SIGNALTYPE'], verbose)
 
     # storing data in arrays per SV and per signalType
     indexSignalType = []
     dataMeasSignalType = []
     measTOW = []  # TOWs with measurements
+    measTOWElev = []
     measCN0 = []  # CNO diff @ measTOW
+    measCN0Elev = []
     STlist = []  # list of signaltypes traversed
-    SVIDlist = []  # list of SVIDs traversed
+    SVIDlist = []  # list of SVIDs traversed for CN0
+    SVIDlistElev = []  # list of SVIDs traversed for Elev
     ELEVATIONVisibility = []  # list of Elevation  traversed
 
     # extract first TOW and CN0 arrays for all SVs and signaltypes
@@ -236,6 +261,15 @@ if __name__ == "__main__":
         for i, signalType in enumerate(signalTypesSVID):
             STlist.append(signalType)
             SVIDlist.append(SVID)
+
+    # preparing list of elevation to corespond with the CN0 list
+    for SVID in SVIDsVis:
+        signalTypesSVID = extractTOWandCN0(SVID, dataMeas, measTOWElev, measCN0Elev, verbose)
+        for i, signalType in enumerate(signalTypesSVID):
+            SVIDlistElev.append(SVID)
+    for i in range(len(SVIDlist)):
+        if not SVIDlist[i] == SVIDlistElev[i]:
+            SVIDlistElev.insert(i, SVIDlist[i])
 
     # create the TOW array covering the whole tie range
     TOWspan, UTCspan = createFullTimeSpan(measTOW)
@@ -270,9 +304,20 @@ if __name__ == "__main__":
     UTCspan.remove(UTCspan[0])
     # create the plots for each signaltype
     plotCN0diff.plotCN0diff(SVIDlist, STlist, UTCspan, measCN0diff, dateString, verbose)
-
+    # calculating the mean elevation for each signal type
+    meanElev = []
+    for i in SVIDlistElev:
+        ELEVATIONVisibility = extractELEVATION(i, dataVisibility, verbose)
+        print(ELEVATIONVisibility)
+        mean = np.mean(ELEVATIONVisibility)
+        meanElev.append(mean)
     # determine the maximum difference of CN0
     for i in range(len(measCN0diff)):
-        gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVIDlist[i])
-        print('Satellite %d signaltype %s has %s maximum variation' % (gnssPRN, mSSN.GNSSSignals[STlist[i]]['name'], np.nanmax(abs(measCN0diff[i]))))
+        gnssSystCN0, gnssSystShortCN0, gnssPRNCN0 = mSSN.svPRN(SVIDlist[i])
+        print('Satellite %d signaltype %s has %s maximum var. at the elev. of %s ' % (gnssPRNCN0, mSSN.GNSSSignals[STlist[i]]['name'], np.nanmin(measCN0diff[i]), meanElev[i]))
+        # if mSSN.GNSSSignals[STlist[i]]['name'] == 'GAL_L1A':
+        #     data = [gnssPRNCN0, np.nanmin(measCN0diff[i]), meanElev[i]]
+        #     g = open('abc.txt', 'a')
+        #     g.write(str(data))
+        #     g.close
     sys.exit(E_SUCCESS)

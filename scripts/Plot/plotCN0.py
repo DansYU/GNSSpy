@@ -113,7 +113,7 @@ def plotCN0(k, firstSV, listSVIDs, listST, spanElevation, spanUTC, spanJammingSt
             plt.xlim(spanUTC[0], spanUTC[-1])
             # annotate for copyright
             plt.text(0, -0.125, r'$\copyright$ Alain Muls (alain.muls@rma.ac.be)', horizontalalignment='left', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
-            plt.text(1, -0.125, r'$\copyright$ Frederic Snyers (fredericsn@gmail.com)', horizontalalignment='right', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
+            plt.text(1, -0.125, r'$\copyright$ Andrei Alex (andrei.alex.toma@gmail.com)', horizontalalignment='right', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
             # add the legend
 
             # Shrink current axis's height by x% on the bottom
@@ -165,7 +165,7 @@ def plotCN0(k, firstSV, listSVIDs, listST, spanElevation, spanUTC, spanJammingSt
                     print('mSSN.GNSSSignals[listST[%d]][name] = %s' % (j, mSSN.GNSSSignals[listST[j]]['name']))
                     print('spanUTC = %s  ==>  %s' % (spanUTC[0], spanUTC[-1]))
                     plt.plot(spanUTC, CN0meas[j], linestyle='-', color=next(colors), linewidth=0.25, alpha=0.75, label=stLabel[-1])
-                    ax.set_ylim(20, 60)
+                    ax.set_ylim(0, 60)
                     # plot annotation
                     gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVj)
                     textSVID = gnssSystShort + str(gnssPRN)
@@ -180,7 +180,7 @@ def plotCN0(k, firstSV, listSVIDs, listST, spanElevation, spanUTC, spanJammingSt
             plt.xlim(spanUTC[0], spanUTC[-1])
             # annotate for copyright
             plt.text(0, -0.125, r'$\copyright$ Alain Muls (alain.muls@rma.ac.be)', horizontalalignment='left', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
-            plt.text(1, -0.125, r'$\copyright$ Frederic Snyers (fredericsn@gmail.com)', horizontalalignment='right', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
+            plt.text(1, -0.125, r'$\copyright$ Andrei Alex (andrei.alex.toma@gmail.com)', horizontalalignment='right', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
             # add the legend
             # Shrink current axis's height by x% on the bottom
             box = ax.get_position()
@@ -234,7 +234,7 @@ def plotCN0(k, firstSV, listSVIDs, listST, spanElevation, spanUTC, spanJammingSt
                     print('spanUTC = %s  ==>  %s' % (spanUTC[0], spanUTC[-1]))
                     # plotting CNO
                     ax.plot(spanUTC, CN0meas[j], linestyle='-', linewidth=0.5, alpha=1, label=stLabel[-1])
-                    ax.set_ylim(20, 60)
+                    ax.set_ylim(0, 60)
                     # plot annotation for CN0
                     gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVj)
                     textSVID = gnssSystShort + str(gnssPRN)
@@ -265,7 +265,7 @@ def plotCN0(k, firstSV, listSVIDs, listST, spanElevation, spanUTC, spanJammingSt
             #     ax2.xlim(spanUTC[0], spanUTC[-1])
             # annotate for copyright
             plt.text(0, -0.125, r'$\copyright$ Alain Muls (alain.muls@rma.ac.be)', horizontalalignment='left', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
-            plt.text(1, -0.125, r'$\copyright$ Frederic Snyers (fredericsn@gmail.com)', horizontalalignment='right', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
+            plt.text(1, -0.125, r'$\copyright$ Andrei Alex (andrei.alex.toma@gmail.com)', horizontalalignment='right', verticalalignment='bottom', transform=ax.transAxes, alpha=0.5, fontsize='x-small')
             # add the legend
             # Shrink current axis's height by x% on the bottom
             box = ax.get_position()

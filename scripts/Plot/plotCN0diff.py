@@ -51,7 +51,7 @@ def plotCN0diff(listSVIDs, listST, spanUTC, CN0measdiff, dateStr, verbose=False)
 
             # create label for signalType and plot its SN0 for this uniqSVi
             stLabel = []
-            ax.set_color_cycle(['purple', 'black', 'green', 'cyan', 'violet'])
+            ax.set_color_cycle(['black', 'yellow', 'blue', 'pink'])
 
             for j, SVj in enumerate(listSVIDs):
                 if SVj == uniqSVi:
@@ -60,7 +60,7 @@ def plotCN0diff(listSVIDs, listST, spanUTC, CN0measdiff, dateStr, verbose=False)
                     print('spanUTC = %s  ==>  %s' % (spanUTC[0], spanUTC[-1]))
                     print(len(spanUTC), len(CN0measdiff[j]))
                     plt.plot(spanUTC, CN0measdiff[j], linestyle='-', linewidth=0.25, alpha=0.75, label=stLabel[-1])
-                    ax.set_ylim(-3, 3)
+                    ax.set_ylim(-4, 4)
                     # plot annotation
                     gnssSyst, gnssSystShort, gnssPRN = mSSN.svPRN(SVj)
                     textSVID = gnssSystShort + str(gnssPRN)

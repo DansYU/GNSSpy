@@ -37,7 +37,7 @@ def treatCmdOpts(argv):
 
     Sets the global variables according to the CLI args
     """
-    helpTxt = os.path.basename(__file__) + ' plots the Carrier-to-Noise plots for PRS data'
+    helpTxt = os.path.basename(__file__) + ' plots the Carrier-to-Noise variation for PRS data'
 
     # create the parser for command line arguments
     parser = argparse.ArgumentParser(description=helpTxt)
@@ -308,16 +308,10 @@ if __name__ == "__main__":
     meanElev = []
     for i in SVIDlistElev:
         ELEVATIONVisibility = extractELEVATION(i, dataVisibility, verbose)
-        print(ELEVATIONVisibility)
         mean = np.mean(ELEVATIONVisibility)
         meanElev.append(mean)
     # determine the maximum difference of CN0
     for i in range(len(measCN0diff)):
         gnssSystCN0, gnssSystShortCN0, gnssPRNCN0 = mSSN.svPRN(SVIDlist[i])
         print('Satellite %d signaltype %s has %s maximum var. at the elev. of %s ' % (gnssPRNCN0, mSSN.GNSSSignals[STlist[i]]['name'], np.nanmin(measCN0diff[i]), meanElev[i]))
-        # if mSSN.GNSSSignals[STlist[i]]['name'] == 'GAL_L1A':
-        #     data = [gnssPRNCN0, np.nanmin(measCN0diff[i]), meanElev[i]]
-        #     g = open('abc.txt', 'a')
-        #     g.write(str(data))
-        #     g.close
     sys.exit(E_SUCCESS)
